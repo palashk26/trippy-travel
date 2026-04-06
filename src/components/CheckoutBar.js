@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     ...Fonts.extrabold,
   },
   price: {
-    fontSize: 22,
+    fontSize: 20,
     color: Colors.textPrimary,
     ...Fonts.bold,
   },

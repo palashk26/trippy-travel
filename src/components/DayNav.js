@@ -25,6 +25,7 @@ export default function DayNav({ days = [], activeDay, onDayPress }) {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="always"
       >
         {tabs.map((tab) => {
           const isActive = tab.key === activeDay;
@@ -60,14 +61,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.lg,
     marginRight: Spacing.lg,
+    alignItems: 'center',
     position: 'relative',
   },
   tabActive: {},
   tabIndicator: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: Spacing.md,
+    right: Spacing.md,
     height: 3,
     backgroundColor: Colors.orange,
     borderRadius: 3,

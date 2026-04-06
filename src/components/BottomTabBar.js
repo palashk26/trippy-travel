@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Colors, Fonts, Spacing } from '../theme/colors';
@@ -21,7 +22,7 @@ export default function BottomTabBar({ activeTab = 'home' }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       {tabs.map((tab) => {
         const isActive = tab.key === activeTab;
         const iconName = isActive ? tab.icon : `${tab.icon}-outline`;
@@ -45,7 +46,7 @@ export default function BottomTabBar({ activeTab = 'home' }) {
           </Pressable>
         );
       })}
-    </View>
+    </SafeAreaView>
   );
 }
 

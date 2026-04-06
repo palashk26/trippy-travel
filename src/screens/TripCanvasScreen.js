@@ -35,7 +35,9 @@ import useTripStore from '../store/tripStore';
 import { getItemById } from '../data/mockData';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const HEADER_HEIGHT = 59; 
+const TABS_HEIGHT = 60;
 
 /**
  * TripCanvasScreen — The Master Trip Canvas (Hub).
@@ -154,9 +156,6 @@ export default function TripCanvasScreen() {
   const scrollAnimRef = useRef(null); // Keep a ref to the active animation
   const isSystemScrolling = useRef(false);
 
-  const HEADER_HEIGHT = 63;
-  const TABS_HEIGHT = 54;
-
   const hasUnsavedChanges = useTripStore((s) => s.hasUnsavedChanges);
 
   // Track the current Y value for the manual "smooth scroll" start point
@@ -203,7 +202,7 @@ export default function TripCanvasScreen() {
         offsets.sort((a, b) => a.val - b.val);
 
         for (let i = 0; i < offsets.length; i++) {
-          if (y >= offsets[i].val - (HEADER_HEIGHT + TABS_HEIGHT + 20)) {
+          if (y >= offsets[i].val - (HEADER_HEIGHT + TABS_HEIGHT + 40)) {
             currentActive = isNaN(offsets[i].key) ? offsets[i].key : parseInt(offsets[i].key, 10);
           }
         }
@@ -336,16 +335,28 @@ export default function TripCanvasScreen() {
           <View style={{ width: 40 }} />
         </View>
 
-        {/* Absolute Overlay Navigation (Hidden when hero is visible) with smooth fade */}
-        {/* Sticky Fixed Navigation Bar is now handled inline for perfect sync */}
-
-        {/* Sticky Day Nav — fixed outside ScrollView for zero jitter */}
-        <View style={styles.stickyNavContainer}>
-          <DayNav
-            days={trip.days}
-            activeDay={activeDay}
-            onDayPress={handleDayPress}
-          />
+        {/* Sticky Day Nav — clip container + native-driver slide-in from scrollY */}
+        <View style={styles.dayNavClip}>
+          <Animated.View
+            style={[
+              styles.stickyNavContainer,
+              {
+                transform: [{
+                  translateY: scrollY.interpolate({
+                    inputRange: [210, 260],
+                    outputRange: [-TABS_HEIGHT, 0],
+                    extrapolate: 'clamp',
+                  })
+                }]
+              }
+            ]}
+          >
+            <DayNav
+              days={trip.days}
+              activeDay={activeDay}
+              onDayPress={handleDayPress}
+            />
+          </Animated.View>
         </View>
 
         <Animated.ScrollView
@@ -355,6 +366,7 @@ export default function TripCanvasScreen() {
           showsVerticalScrollIndicator={false}
           onScroll={handleScroll}
           scrollEventThrottle={16}
+          keyboardShouldPersistTaps="always"
         >
           {/* Hero Image */}
           <View style={styles.heroContainer}>
@@ -504,7 +516,7 @@ export default function TripCanvasScreen() {
                             } else {
                               setMoreOptionsType(section.type);
                               setMoreOptionsLockKey(section.lockKey);
-                              
+
                               // Determine context (area for hotels/activities, route for transit)
                               let context = null;
                               if (section.type === 'hotel' || section.type === 'activity') {
@@ -628,7 +640,7 @@ export default function TripCanvasScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.white, // Match the bottom nav/gesture area
+    backgroundColor: Colors.white,
   },
   container: {
     flex: 1,
@@ -663,7 +675,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
+    paddingVertical: 10,
     backgroundColor: Colors.white,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
@@ -684,6 +696,17 @@ const styles = StyleSheet.create({
   // Scroll
   scroll: { flex: 1 },
   scrollContent: { paddingBottom: 0 },
+  dayNavClip: {
+    position: 'absolute',
+    top: HEADER_HEIGHT, 
+    left: 0,
+    right: 0,
+    height: TABS_HEIGHT,
+    overflow: 'hidden',
+    zIndex: 1000,
+    backgroundColor: 'transparent',
+    pointerEvents: 'box-none',
+  },
 
   // Hero
   heroContainer: {
@@ -784,6 +807,7 @@ const styles = StyleSheet.create({
     ...Fonts.bold,
   },
   stickyNavContainer: {
+    height: TABS_HEIGHT,
     zIndex: 500,
     backgroundColor: Colors.white,
     shadowColor: Colors.black,

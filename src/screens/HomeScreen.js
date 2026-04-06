@@ -31,7 +31,7 @@ export default function HomeScreen() {
   const [chatVisible, setChatVisible] = useState(false);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <View style={styles.container}>
         <View style={styles.contentSheet}>

@@ -136,7 +136,7 @@ export default function CanvasChatModal({ visible, onClose }) {
         <View style={styles.inputBar}>
           <TextInput
             style={styles.input}
-            placeholder="Ask Trippy to change anything..."
+            placeholder="Ask Trippy"
             placeholderTextColor={Colors.textMuted}
             value={inputText}
             onChangeText={setInputText}
@@ -181,7 +181,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingVertical: Spacing.lg,
-    flexGrow: 1, // Ensures items sit at bottom if less than sheet height
   },
   suggestionsScroll: {
     marginTop: Spacing.sm,
@@ -210,10 +209,9 @@ const styles = StyleSheet.create({
   inputBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: Spacing.xs,
-    paddingHorizontal: Spacing.lg,
-    paddingRight: Spacing.sm,
-    paddingVertical: 10,
+    paddingLeft: Spacing.lg,
+    paddingRight: 8,
+    paddingVertical: 8,
     marginBottom: 32,
     marginHorizontal: Spacing.lg,
     backgroundColor: Colors.white,
@@ -230,16 +228,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 15,
     color: Colors.textPrimary,
+    paddingHorizontal: Spacing.sm,
+    ...(Platform.OS === 'web' ? { outlineStyle: 'none', outlineWidth: 0 } : {}),
     ...Fonts.medium,
-    paddingHorizontal: Spacing.md,
   },
   sendBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: Colors.purple,
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
   },
   handleBar: {
     height: 48,

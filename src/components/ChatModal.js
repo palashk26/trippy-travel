@@ -36,10 +36,10 @@ if (
 }
 
 const SUGGESTIONS = [
-  { emoji: '💵', text: 'Show me budget\ntrips under 40K' },
+  { emoji: '💵', text: 'Budget friendly\ntrips' },
   { emoji: '📅', text: 'Possible trips\nfor 4 days' },
   { emoji: '🧗', text: 'Long weekend\ngetaways' },
-  { emoji: '🏖️', text: 'Find a destination\nwith beach' },
+  { emoji: '🏖️', text: 'Nearby beach\nspots' },
 ];
 
 const BUDGET_RANGES = [
@@ -487,13 +487,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
           <View style={styles.inputBar}>
             <TextInput
               style={styles.input}
-              placeholder={
-                step === 1
-                  ? (messages.some(m => m.sender === 'user' && /day|days/i.test(m.text)) ? '12th Oct' : 'April for 5 days')
-                  : step === 3
-                    ? 'Hyderabad'
-                    : 'Chill, adventure...'
-              }
+              placeholder="Ask Trippy"
               placeholderTextColor={Colors.textMuted}
               value={inputText}
               onChangeText={setInputText}
@@ -515,7 +509,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
           <View style={styles.inputBar}>
             <TextInput
               style={styles.input}
-              placeholder="Where to next?"
+              placeholder="Ask Trippy"
               placeholderTextColor={Colors.textMuted}
               editable={step === 0}
               value={inputText}
@@ -583,7 +577,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 16,
     paddingHorizontal: Spacing.lg,
   },
   avatar: {
