@@ -580,7 +580,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: Spacing.xl,
-    flexGrow: 1, // Ensures content stays bottom-aligned if list is short
   },
 
   // Welcome
@@ -664,10 +663,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
-    padding: Spacing.xs,
-    paddingHorizontal: Spacing.lg,
-    paddingRight: Spacing.sm,
-    paddingVertical: 10,
+    paddingLeft: Spacing.lg,
+    paddingRight: 6,
+    paddingVertical: 6,
     marginBottom: Platform.OS === 'ios' ? 32 : Spacing.xl,
     marginHorizontal: Spacing.lg,
     backgroundColor: Colors.white,
@@ -682,18 +680,19 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 44,
     backgroundColor: 'transparent',
-    paddingHorizontal: Spacing.lg,
+    paddingHorizontal: Spacing.md,
     fontSize: 15,
     color: Colors.textPrimary,
     ...Fonts.medium,
   },
   sendBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: Colors.purple,   // AI send action
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.purple,
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
   },
   budgetChipWrap: {
     flexDirection: 'row',

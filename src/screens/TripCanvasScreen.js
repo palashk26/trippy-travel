@@ -339,13 +339,22 @@ export default function TripCanvasScreen() {
         {/* Absolute Overlay Navigation (Hidden when hero is visible) with smooth fade */}
         {/* Sticky Fixed Navigation Bar is now handled inline for perfect sync */}
 
+        {/* Sticky Day Nav — fixed outside ScrollView for zero jitter */}
+        <View style={styles.stickyNavContainer}>
+          <DayNav
+            days={trip.days}
+            activeDay={activeDay}
+            onDayPress={handleDayPress}
+          />
+        </View>
+
         <Animated.ScrollView
           ref={scrollRef}
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           onScroll={handleScroll}
-          scrollEventThrottle={1}
+          scrollEventThrottle={16}
         >
           {/* Hero Image */}
           <View style={styles.heroContainer}>
@@ -363,28 +372,6 @@ export default function TripCanvasScreen() {
               </View>
             </View>
           </View>
-
-          {/* Pure Animated Sticky Day Nav (No ghosting, perfect sync) */}
-          <Animated.View 
-            style={[
-              styles.stickyNavContainer,
-              {
-                transform: [{
-                  translateY: scrollY.interpolate({
-                    inputRange: [260, 261],
-                    outputRange: [0, 1],
-                    extrapolateLeft: 'clamp'
-                  })
-                }]
-              }
-            ]}
-          >
-            <DayNav
-              days={trip.days}
-              activeDay={activeDay}
-              onDayPress={handleDayPress}
-            />
-          </Animated.View>
 
           {/* Booking Checklist */}
           <View onLayout={(e) => sectionLayouts.current['checklist'] = e.nativeEvent.layout.y}>
@@ -799,10 +786,9 @@ const styles = StyleSheet.create({
   stickyNavContainer: {
     zIndex: 500,
     backgroundColor: Colors.white,
-    // Add shadow
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 4,
     borderBottomWidth: 1,
