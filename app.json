@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Trippy Travel",
+    "slug": "trippy-travel",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icons/flight.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.trippy.travel"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.trippy.travel"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-font"
+    ],
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/icons/flight.png"
+    }
+  }
+}

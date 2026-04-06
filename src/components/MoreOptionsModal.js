@@ -1,0 +1,271 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import { Feather } from '@expo/vector-icons';
+import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
+import { activities, hotels } from '../data/mockData';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+/**
+ * MoreOptionsModal — Bottom sheet that shows 5 more options
+ * for a specific category (Hotel/Activity).
+ */
+export default function MoreOptionsModal({
+  visible,
+  onClose,
+  type = 'activity',
+  onSelect,
+  alreadySelectedIds = [],
+}) {
+  // Get potential options that aren't already selected
+  const allOptions = type === 'hotel' ? hotels : activities;
+  const filteredOptions = allOptions
+    .filter((item) => !alreadySelectedIds.includes(item.id))
+    .slice(0, 5); // Limit to top 5 more options
+
+  return (
+    <Modal
+      isVisible={visible}
+      onBackdropPress={onClose}
+      onSwipeComplete={onClose}
+      swipeDirection="down"
+      style={styles.modal}
+      backdropColor={Colors.black}
+      backdropOpacity={0.6}
+      useNativeDriver={true}
+      propagateSwipe={true}
+    >
+      <View style={styles.container}>
+        {/* Handle */}
+        <View style={styles.handleBar}>
+          <View style={styles.handle} />
+        </View>
+
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            More {type === 'hotel' ? 'Stays' : 'Experiences'}
+          </Text>
+          <Pressable onPress={onClose} style={styles.closeBtn}>
+            <Feather name="x" size={20} color={Colors.textPrimary} />
+          </Pressable>
+        </View>
+
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {filteredOptions.length === 0 ? (
+            <Text style={styles.emptyText}>No more options available.</Text>
+          ) : (
+            filteredOptions.map((item) => (
+              <View key={item.id} style={styles.itemCard}>
+                <View style={styles.cardHeader}>
+                  <Image source={typeof item.image === 'string' ? { uri: item.image } : item.image} style={styles.itemImage} />
+                  <View style={styles.itemInfo}>
+                    <View style={styles.itemRowHeader}>
+                      <Text style={styles.itemName}>
+                        {item.name}
+                      </Text>
+                      {item.rating && (
+                        <View style={styles.ratingBox}>
+                          <Text style={styles.ratingNumber}>{item.rating}</Text>
+                        </View>
+                      )}
+                    </View>
+                    <View style={styles.itemSubRow}>
+                      {type === 'activity' && (
+                        <Feather name="clock" size={11} color={Colors.textSecondary} style={{ marginRight: 4 }} />
+                      )}
+                      <Text style={styles.itemSub}>
+                        {item.duration || item.location?.split(',')[0]}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <Text style={styles.itemDescription}>
+                  {item.description}
+                </Text>
+
+                <View style={styles.cardFooter}>
+                  <Pressable
+                    style={styles.addBtn}
+                    onPress={() => {
+                      onSelect(item.id);
+                      onClose();
+                    }}
+                  >
+                    <Feather name="plus" size={14} color={Colors.white} />
+                    <Text style={styles.addBtnText}>Add to Trip</Text>
+                  </Pressable>
+                </View>
+              </View>
+            ))
+          )}
+          <View style={{ height: 40 }} />
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+    justifyContent: 'flex-end',
+  },
+  container: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: Radius.xxl,
+    borderTopRightRadius: Radius.xxl,
+    height: SCREEN_HEIGHT * 0.8, // Slightly taller to accommodate 5 cards comfortably
+    paddingHorizontal: Spacing.xl,
+  },
+  handleBar: {
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: Colors.border,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: Spacing.xl,
+  },
+  title: {
+    fontSize: 20,
+    color: Colors.textPrimary,
+    ...Fonts.bold,
+  },
+  closeBtn: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    gap: Spacing.xl,
+    paddingBottom: 40,
+    paddingTop: 8,
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: Colors.textMuted,
+    marginTop: 40,
+    ...Fonts.medium,
+  },
+  itemCard: {
+    backgroundColor: Colors.white,
+    borderRadius: Radius.md,
+    padding: Spacing.lg,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
+  },
+  itemImage: {
+    width: 50,
+    height: 50,
+    borderRadius: Radius.xs,
+    backgroundColor: Colors.cardBg,
+  },
+  itemInfo: {
+    flex: 1,
+  },
+  itemRowHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 2,
+    gap: 8,
+  },
+  itemName: {
+    fontSize: 15,
+    color: Colors.textPrimary,
+    flex: 1,
+    ...Fonts.bold,
+  },
+  ratingBox: {
+    backgroundColor: '#005CEE',
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    marginTop: 2,
+  },
+  ratingNumber: {
+    color: Colors.white,
+    fontSize: 10,
+    ...Fonts.bold,
+  },
+  itemSubRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemSub: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    ...Fonts.medium,
+  },
+  itemDescription: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    lineHeight: 19,
+    marginBottom: Spacing.lg, // Extra breathing space since divider is gone
+    ...Fonts.regular,
+  },
+  cardFooter: {
+    paddingTop: 4, // Reduced since border is gone
+    alignItems: 'flex-end',
+  },
+  priceContainer: {
+    flex: 1,
+  },
+  itemPrice: {
+    fontSize: 14,
+    color: Colors.textPrimary,
+    ...Fonts.bold,
+  },
+  addBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    backgroundColor: Colors.black,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: Radius.full,
+  },
+  addBtnText: {
+    color: Colors.white,
+    fontSize: 13,
+    ...Fonts.bold,
+  },
+});
