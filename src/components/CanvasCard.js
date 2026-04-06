@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 
 /**
@@ -182,10 +182,11 @@ export default function CanvasCard({ item, type = 'hotel', isLocked = false, onM
               style={[styles.selectBtn, isLocked && styles.selectBtnLocked]}
               onPress={onSelect}
             >
+              {isLocked && <View style={styles.innerBorder} />}
               {isLocked ? (
                 <>
-                  <Feather name="check" size={14} color={Colors.white} />
-                  <Text style={styles.selectBtnText}>Added</Text>
+                  <MaterialIcons name="check" size={16} color={Colors.orange} />
+                  <Text style={[styles.selectBtnText, styles.selectBtnTextLocked]}>Added</Text>
                 </>
               ) : (
                 <Text style={styles.selectBtnText}>Add</Text>
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   cardBorderWrapLocked: {
-    borderColor: Colors.orange,
+    borderColor: 'transparent',
   },
   cardShadow: {
     width: 280,
@@ -244,11 +245,13 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     borderTopLeftRadius: Radius.lg,
     borderTopRightRadius: Radius.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderDark,
   },
   aiPickBadgeText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#8A2BE2', // Deep purple
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
     fontFamily: 'Inter_800ExtraBold',
     textTransform: 'uppercase',
     marginBottom: 4,
@@ -460,40 +463,49 @@ const styles = StyleSheet.create({
   // Footer Actions
   footer: {
     flexDirection: 'row',
-    gap: Spacing.md,
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 'auto',
     paddingTop: Spacing.xs,
   },
   detailsBtn: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
+    paddingVertical: 6,
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    borderRadius: Radius.full,
-    borderWidth: 1,
-    borderColor: '#000000',
   },
   detailsBtnText: {
-    fontSize: 14,
-    color: '#000000',
-    fontFamily: 'Inter_600SemiBold',
+    fontSize: 13,
+    color: Colors.textSecondary,
+    ...Fonts.medium,
+    textDecorationLine: 'underline',
   },
   selectBtn: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
     paddingVertical: 10,
+    paddingHorizontal: 24,
     borderRadius: Radius.full,
-    backgroundColor: '#000000',
+    backgroundColor: '#222222',
   },
   selectBtnLocked: {
-    backgroundColor: Colors.orange,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    paddingLeft: 14,
+  },
+  innerBorder: {
+    ...StyleSheet.absoluteFillObject,
+    borderWidth: 1.7,
+    borderColor: Colors.orange,
+    borderRadius: Radius.full,
   },
   selectBtnText: {
     fontSize: 14,
     color: Colors.white,
     fontFamily: 'Inter_600SemiBold',
+  },
+  selectBtnTextLocked: {
+    color: Colors.orange,
   },
 });

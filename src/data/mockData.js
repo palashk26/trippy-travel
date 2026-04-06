@@ -536,7 +536,7 @@ export const activities = [
 export const keralaTripTemplate = {
   id: 'trip_kerala_1',
   title: 'Kerala Nature Exploration',
-  subtitle: 'Alleppey(2) · Munnar(1)',
+  subtitle: 'Alleppey(2) • Munnar(1)',
   destination: 'Kerala',
   duration: '3D/2N',
   dates: 'Oct 12 – Oct 14',

@@ -74,10 +74,10 @@ export default function CanvasChatModal({ visible, onClose }) {
       visible={visible}
       onRequestClose={onClose}
       transparent={true}
-      animationType="slide"
+      animationType="fade"
     >
-      <Pressable style={styles.modalOverlay} onPress={onClose}>
-        <View style={styles.sheet} onStartShouldSetResponder={() => true}>
+    <Pressable style={styles.modalOverlay} onPress={onClose}>
+      <View style={styles.sheet} onStartShouldSetResponder={() => true}>
         <Pressable style={styles.closeBtn} onPress={onClose}>
           <Feather name="x" size={22} color={Colors.textPrimary} />
         </Pressable>
@@ -157,8 +157,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
+  closeBtn: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 100,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   sheet: {
-    height: SCREEN_HEIGHT * 0.85,
+    height: SCREEN_HEIGHT * 0.7,
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
@@ -243,28 +255,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
-  },
-  handleBar: {
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  handle: {
-    width: 36,
-    height: 4,
-    backgroundColor: Colors.border,
-    borderRadius: 2,
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 100,
   },
 });
 

@@ -59,10 +59,22 @@ export default function QuickLookModal({
       visible={visible}
       onRequestClose={onClose}
       transparent={true}
-      animationType="slide"
+      animationType="fade"
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
         <View style={styles.sheet} onStartShouldSetResponder={() => true}>
+          {(type !== 'flight' && type !== 'transit') && (
+            <Pressable 
+              style={[styles.closeBtn, (type === 'transit' || type === 'flight') && styles.closeBtnDark]} 
+              onPress={onClose}
+            >
+              <Feather 
+                name="x" 
+                size={22} 
+                color={(type === 'transit' || type === 'flight') ? Colors.textPrimary : Colors.white} 
+              />
+            </Pressable>
+          )}
         {/* Handle */}
         <View style={[styles.handleBar, hasImage && styles.handleBarAbsolute]}>
           <View style={[styles.handle, hasImage && styles.handleImageOverlay]} />
@@ -182,11 +194,6 @@ export default function QuickLookModal({
             ]}
             onPress={onAddToTrip}
           >
-            <Feather
-              name={isLocked ? 'check' : 'plus'}
-              size={16}
-              color={isLocked ? Colors.orange : Colors.white}
-            />
             <Text
               style={[
                 styles.addBtnText,
@@ -218,6 +225,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
+  closeBtn: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 100,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeBtnDark: {
+    backgroundColor: 'transparent',
+  },
   sheet: {
     maxHeight: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,
@@ -227,8 +249,8 @@ const styles = StyleSheet.create({
   },
   handleBar: {
     alignItems: 'center',
-    paddingTop: Spacing.md,
-    paddingBottom: Spacing.sm,
+    paddingTop: 8,
+    paddingBottom: 16,
   },
   handleBarAbsolute: {
     position: 'absolute',
@@ -336,7 +358,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.sm,
     padding: Spacing.md,
     borderWidth: 1,
-    borderColor: Colors.aiPickBorder,
+    borderColor: Colors.borderDark,
   },
   aiHeader: {
     flexDirection: 'row',
@@ -345,15 +367,17 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   aiLabel: {
-    fontSize: 13,
+    fontSize: 11,
     color: Colors.purple,
-    ...Fonts.bold,
+    letterSpacing: 0.8,
+    fontFamily: 'Inter_800ExtraBold',
+    textTransform: 'uppercase',
   },
   aiReason: {
     fontSize: 13,
     color: Colors.aiPickText,
-    lineHeight: 19,
-    ...Fonts.regular,
+    lineHeight: 18,
+    fontFamily: 'Inter_500Medium',
   },
   description: {
     fontSize: 14,
@@ -423,8 +447,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: Colors.orange,
-    paddingVertical: Spacing.md,
+    backgroundColor: '#222222',
+    paddingVertical: 10,
     borderRadius: Radius.sm,
   },
   addBtnLocked: {
@@ -435,7 +459,7 @@ const styles = StyleSheet.create({
   addBtnText: {
     fontSize: 15,
     color: Colors.textWhite,
-    ...Fonts.bold,
+    ...Fonts.semibold,
   },
   addBtnTextLocked: {
     color: Colors.orange,
@@ -448,7 +472,7 @@ const styles = StyleSheet.create({
     gap: 6,
     borderWidth: 1.5,
     borderColor: Colors.textPrimary,
-    paddingVertical: Spacing.md,
+    paddingVertical: 10,
     borderRadius: Radius.sm,
   },
   fullDetailsText: {

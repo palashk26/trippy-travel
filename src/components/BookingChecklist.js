@@ -165,11 +165,11 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.sm,
   },
   badgePending: {
-    backgroundColor: '#000000',
+    backgroundColor: '#222222',
   },
   badgeLocked: {
     backgroundColor: 'transparent',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: Colors.orange,
   },
   badgeText: {

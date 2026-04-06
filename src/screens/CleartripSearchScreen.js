@@ -542,10 +542,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: Spacing.md,
-    backgroundColor: Colors.orange,
-    borderRadius: Radius.sm,
+    backgroundColor: '#222222',
+    borderRadius: Radius.full,
     paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: 24,
   },
   ctaSelected: {
     backgroundColor: Colors.green,
@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
   ctaText: {
     fontSize: 13,
     color: Colors.white,
-    ...Fonts.bold,
+    ...Fonts.semibold,
   },
 
   // Flight card

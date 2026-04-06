@@ -57,10 +57,22 @@ export default function MoreOptionsModal({
       visible={visible}
       onRequestClose={onClose}
       transparent={true}
-      animationType="slide"
+      animationType="fade"
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
         <View style={styles.container} onStartShouldSetResponder={() => true}>
+          {type !== 'flight' && (
+            <Pressable 
+              style={[styles.closeBtn, (type === 'activity' || type === 'transit' || type === 'flight') && styles.closeBtnDark]} 
+              onPress={onClose}
+            >
+              <Feather 
+                name="x" 
+                size={22} 
+                color={(type === 'activity' || type === 'transit' || type === 'flight') ? Colors.textPrimary : Colors.white} 
+              />
+            </Pressable>
+          )}
         {/* Handle */}
         <View style={styles.handleBar}>
           <View style={styles.handle} />
@@ -73,9 +85,6 @@ export default function MoreOptionsModal({
              type === 'activity' ? 'More Experiences' : 
              'Transport Alternatives'}
           </Text>
-          <Pressable onPress={onClose} style={styles.closeBtn}>
-            <Feather name="x" size={20} color={Colors.textPrimary} />
-          </Pressable>
         </View>
 
         <ScrollView
@@ -140,7 +149,6 @@ export default function MoreOptionsModal({
                       onClose();
                     }}
                   >
-                    <Feather name="plus" size={14} color={Colors.white} />
                     <Text style={styles.addBtnText}>Add to Trip</Text>
                   </Pressable>
                 </View>
@@ -161,16 +169,32 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
+  closeBtn: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 100,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeBtnDark: {
+    backgroundColor: 'transparent',
+  },
   container: {
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xxl,
     borderTopRightRadius: Radius.xxl,
-    maxHeight: SCREEN_HEIGHT * 0.85,
+    height: SCREEN_HEIGHT * 0.8,
     paddingHorizontal: Spacing.xl,
   },
   handleBar: {
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingTop: 8,
+    paddingBottom: 12,
   },
   handle: {
     width: 40,
@@ -182,18 +206,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingTop: 6,
     marginBottom: Spacing.xl,
   },
   title: {
     fontSize: 20,
     color: Colors.textPrimary,
     ...Fonts.bold,
-  },
-  closeBtn: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   scroll: {
     flex: 1,
@@ -294,7 +313,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
-    backgroundColor: Colors.black,
+    backgroundColor: '#222222',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: Radius.full,
@@ -302,6 +321,6 @@ const styles = StyleSheet.create({
   addBtnText: {
     color: Colors.white,
     fontSize: 13,
-    ...Fonts.bold,
+    ...Fonts.semibold,
   },
 });

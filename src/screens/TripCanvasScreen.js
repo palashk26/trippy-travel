@@ -343,7 +343,7 @@ export default function TripCanvasScreen() {
               {
                 transform: [{
                   translateY: scrollY.interpolate({
-                    inputRange: [210, 260],
+                    inputRange: [100, 130],
                     outputRange: [-TABS_HEIGHT, 0],
                     extrapolate: 'clamp',
                   })
@@ -623,7 +623,7 @@ export default function TripCanvasScreen() {
           context={moreOptionsContext}
           onClose={() => setMoreOptionsVisible(false)}
           onSelect={handleSelectMoreOption}
-          alreadySelectedIds={Object.values(locks).flat()}
+          alreadySelectedIds={[].concat(...Object.values(locks))}
         />
         {/* Save Toast Notification */}
         {showSaveToast && (
@@ -925,7 +925,7 @@ const styles = StyleSheet.create({
   },
   saveToast: {
     position: 'absolute',
-    top: 90,
+    top: 140,
     alignSelf: 'center',
     backgroundColor: '#222222', // Dark background for a system toast look
     flexDirection: 'row',
@@ -939,7 +939,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 10,
     elevation: 8,
-    zIndex: 100,
+    zIndex: 3000,
   },
   saveToastText: {
     color: Colors.white,

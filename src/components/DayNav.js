@@ -24,6 +24,7 @@ export default function DayNav({ days = [], activeDay, onDayPress }) {
         ref={navScrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={{ flex: 1 }}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="always"
       >
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.xl,
   },
   tab: {
-    height: 60,
+    height: '100%',
     paddingHorizontal: Spacing.md,
     marginRight: Spacing.lg,
     alignItems: 'center',
@@ -67,12 +68,12 @@ const styles = StyleSheet.create({
   tabActive: {},
   tabIndicator: {
     position: 'absolute',
-    bottom: 0,
-    left: Spacing.md,
-    right: Spacing.md,
+    bottom: 2,
+    width: '120%',
     height: 3,
     backgroundColor: Colors.orange,
     borderRadius: 3,
+    alignSelf: 'center',
   },
   tabText: {
     fontSize: 14,

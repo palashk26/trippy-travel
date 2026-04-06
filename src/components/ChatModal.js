@@ -368,18 +368,17 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
       visible={visible}
       onRequestClose={onClose}
       transparent={true}
-      animationType="slide"
+      animationType="fade"
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
         <View style={styles.container} onStartShouldSetResponder={() => true}>
+          <Pressable style={styles.closeBtn} onPress={onClose}>
+            <Feather name="x" size={22} color={Colors.textPrimary} />
+          </Pressable>
         {/* Handle bar */}
         <View style={styles.handleBar}>
           <View style={styles.handle} />
         </View>
-
-        <Pressable style={styles.closeBtn} onPress={onClose}>
-          <Feather name="x" size={22} color={Colors.textPrimary} />
-        </Pressable>
 
         {/* Welcome screen rendered outside FlatList to prevent scroll on initial load */}
         {step === 0 && messages.length === 0 && (
@@ -546,6 +545,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
+  closeBtn: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 100,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     height: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,
@@ -555,8 +566,8 @@ const styles = StyleSheet.create({
   },
   handleBar: {
     alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 20,
+    paddingTop: 8,
+    paddingBottom: 12,
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
@@ -718,13 +729,14 @@ const styles = StyleSheet.create({
   budgetLabelActive: { color: Colors.purple, ...Fonts.semibold },
   closeBtn: {
     position: 'absolute',
-    top: 12,
-    right: 12,
+    top: 16,
+    right: 16,
+    zIndex: 100,
     width: 36,
     height: 36,
     borderRadius: 18,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 100,
   },
 });

@@ -254,7 +254,7 @@ export default function NativePDPScreen() {
         </ScrollView>
 
         {/* Fixed Bottom Bar */}
-        <View style={[styles.bottomBar, type === 'activity' && { justifyContent: 'center' }]}>
+        <View style={[styles.bottomBar, type === 'activity' && { justifyContent: 'flex-end' }]}>
           {type !== 'activity' && (
             <View style={styles.priceCol}>
               <Text style={styles.priceLabel}>Total Price</Text>
@@ -272,15 +272,9 @@ export default function NativePDPScreen() {
             style={[
               styles.addBtn,
               isLocked && styles.addBtnLocked,
-              type === 'activity' && { paddingHorizontal: 60 }
             ]}
             onPress={handleAddToTrip}
           >
-            <Feather
-              name={isLocked ? 'check' : 'plus'}
-              size={18}
-              color={isLocked ? Colors.green : Colors.textWhite}
-            />
             <Text
               style={[
                 styles.addBtnText,
@@ -446,7 +440,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.md,
     padding: Spacing.lg,
     borderWidth: 1,
-    borderColor: Colors.aiPickBorder,
+    borderColor: Colors.borderDark,
   },
   aiHeader: {
     flexDirection: 'row',
@@ -455,15 +449,17 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   aiLabel: {
-    fontSize: 13,
+    fontSize: 11,
     color: Colors.purple,
-    ...Fonts.bold,
+    letterSpacing: 0.8,
+    fontFamily: 'Inter_800ExtraBold',
+    textTransform: 'uppercase',
   },
   aiReason: {
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.aiPickText,
-    lineHeight: 20,
-    ...Fonts.regular,
+    lineHeight: 18,
+    fontFamily: 'Inter_500Medium',
   },
   infoRow: {
     flexDirection: 'row',
@@ -573,20 +569,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: Colors.orange,
-    paddingHorizontal: Spacing.xxl,
-    paddingVertical: Spacing.md,
+    backgroundColor: '#222222',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
     borderRadius: Radius.sm,
   },
   addBtnLocked: {
-    backgroundColor: Colors.greenLight,
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: Colors.orange,
   },
   addBtnText: {
     fontSize: 16,
     color: Colors.textWhite,
-    ...Fonts.bold,
+    ...Fonts.semibold,
   },
   addBtnTextLocked: {
-    color: Colors.green,
+    color: Colors.orange,
   },
 });
