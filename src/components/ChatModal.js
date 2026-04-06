@@ -502,14 +502,17 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
               onChangeText={setInputText}
               onSubmitEditing={handleSend}
               returnKeyType="send"
+              blurOnSubmit={false}
             />
-            <Pressable
-              style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
-              onPress={handleSend}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
-            </Pressable>
+            <View style={styles.sendBtnWrap}>
+              <Pressable
+                style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
+                onPress={handleSend}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
+              </Pressable>
+            </View>
           </View>
         )}
 
@@ -528,24 +531,26 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
                   advanceStep(inputText.trim());
                 }
               }}
+              blurOnSubmit={false}
             />
-            <Pressable
-              style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
-              onPress={() => {
-                const text = inputText.trim();
-                if (!text) return;
+            <View style={styles.sendBtnWrap}>
+              <Pressable
+                style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
+                onPress={() => {
+                  const text = inputText.trim();
+                  if (!text) return;
 
-                if (step === 0) {
-                  advanceStep(text);
-                } else {
-                  // Fallback for post-generation or other states
-                  handleSend();
-                }
-              }}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
-            </Pressable>
+                  if (step === 0) {
+                    advanceStep(text);
+                  } else {
+                    handleSend();
+                  }
+                }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
+              </Pressable>
+            </View>
           </View>
         )}
       </View>
@@ -580,7 +585,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: Spacing.xl,
-    flexGrow: 1, // Ensures content stays bottom-aligned if list is short
+    flexGrow: 0, 
   },
 
   // Welcome
@@ -663,29 +668,29 @@ const styles = StyleSheet.create({
   inputBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
-    padding: Spacing.xs,
-    paddingHorizontal: Spacing.lg,
-    paddingRight: Spacing.sm,
-    paddingVertical: 10,
-    marginBottom: Platform.OS === 'ios' ? 32 : Spacing.xl,
+    height: 56,
     marginHorizontal: Spacing.lg,
+    marginBottom: Platform.OS === 'ios' ? 32 : Spacing.xl,
     backgroundColor: Colors.white,
     borderRadius: Radius.full,
+    paddingHorizontal: Spacing.sm,
     shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
-    elevation: 4,
+    elevation: 8,
   },
   input: {
     flex: 1,
-    height: 44,
-    backgroundColor: 'transparent',
+    height: '100%',
     paddingHorizontal: Spacing.lg,
     fontSize: 15,
     color: Colors.textPrimary,
     ...Fonts.medium,
+    ...(Platform.OS === 'web' && { outlineStyle: 'none' }),
+  },
+  sendBtnWrap: {
+    paddingRight: 4,
   },
   sendBtn: {
     width: 42,
