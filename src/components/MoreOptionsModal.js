@@ -11,7 +11,7 @@ import {
 import Modal from 'react-native-modal';
 import { Feather } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
-import { activities, hotels } from '../data/mockData';
+import { activities, hotels, transfers } from '../data/mockData';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -25,12 +25,31 @@ export default function MoreOptionsModal({
   type = 'activity',
   onSelect,
   alreadySelectedIds = [],
+  context = null, // Added context (area or route)
 }) {
-  // Get potential options that aren't already selected
-  const allOptions = type === 'hotel' ? hotels : activities;
+  // Get potential options based on type
+  let allOptions = [];
+  if (type === 'hotel') allOptions = hotels;
+  else if (type === 'activity') allOptions = activities;
+  else if (type === 'transit') allOptions = transfers;
+
+  // Filter by context if provided
   const filteredOptions = allOptions
-    .filter((item) => !alreadySelectedIds.includes(item.id))
-    .slice(0, 5); // Limit to top 5 more options
+    .filter((item) => {
+      // Don't show already selected items
+      if (alreadySelectedIds.includes(item.id)) return false;
+      
+      // If we have a context (e.g. "munnar" or "Alleppey -> Munnar"), filter by it
+      if (context) {
+        if (type === 'hotel' || type === 'activity') {
+          return item.area === context;
+        } else if (type === 'transit') {
+          return item.route === context;
+        }
+      }
+      return true;
+    })
+    .slice(0, 10); // Show up to 10 options now that we are filtering properly
 
   return (
     <Modal
@@ -53,7 +72,9 @@ export default function MoreOptionsModal({
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>
-            More {type === 'hotel' ? 'Stays' : 'Experiences'}
+            {type === 'hotel' ? 'More Stays' : 
+             type === 'activity' ? 'More Experiences' : 
+             'Transport Alternatives'}
           </Text>
           <Pressable onPress={onClose} style={styles.closeBtn}>
             <Feather name="x" size={20} color={Colors.textPrimary} />
@@ -71,7 +92,9 @@ export default function MoreOptionsModal({
             filteredOptions.map((item) => (
               <View key={item.id} style={styles.itemCard}>
                 <View style={styles.cardHeader}>
-                  <Image source={typeof item.image === 'string' ? { uri: item.image } : item.image} style={styles.itemImage} />
+                  {type !== 'transit' && (
+                    <Image source={typeof item.image === 'string' ? { uri: item.image } : item.image} style={styles.itemImage} />
+                  )}
                   <View style={styles.itemInfo}>
                     <View style={styles.itemRowHeader}>
                       <Text style={styles.itemName}>
@@ -84,12 +107,26 @@ export default function MoreOptionsModal({
                       )}
                     </View>
                     <View style={styles.itemSubRow}>
-                      {type === 'activity' && (
-                        <Feather name="clock" size={11} color={Colors.textSecondary} style={{ marginRight: 4 }} />
+                      {type === 'transit' ? (
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          {item.route && (
+                            <Text style={styles.itemSub}>
+                              {item.route} <Text style={{ color: Colors.textMuted }}>•</Text> 
+                            </Text>
+                          )}
+                          <Feather name="clock" size={12} color={Colors.textSecondary} style={{ marginHorizontal: 4 }} />
+                          <Text style={styles.itemSub}>{item.duration}</Text>
+                        </View>
+                      ) : (
+                        <>
+                          {(type === 'activity' || type === 'hotel') && (
+                            <Feather name={type === 'activity' ? "clock" : "map-pin"} size={11} color={Colors.textSecondary} style={{ marginRight: 4 }} />
+                          )}
+                          <Text style={styles.itemSub}>
+                            {item.duration || item.location?.split(',')[0]}
+                          </Text>
+                        </>
                       )}
-                      <Text style={styles.itemSub}>
-                        {item.duration || item.location?.split(',')[0]}
-                      </Text>
                     </View>
                   </View>
                 </View>

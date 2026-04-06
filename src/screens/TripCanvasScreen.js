@@ -12,6 +12,7 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  Alert,
 } from 'react-native';
 
 // Enable LayoutAnimation on Android
@@ -68,7 +69,7 @@ export default function TripCanvasScreen() {
 
   // Advanced multi-stage typewriter animation
   useEffect(() => {
-    const words = ['flights', 'dates', 'anything...'];
+    const words = ['flights', 'dates', 'anything'];
     const base = "Ask Trippy to change ";
     let wordIdx = 0;
     let charIdx = 0;
@@ -89,7 +90,20 @@ export default function TripCanvasScreen() {
 
         if (charIdx === currentWord.length) {
           if (wordIdx === words.length - 1) {
-            // If it's the last word ("anything..."), we stop here permanently
+            // Final reduction stage
+            timeout = setTimeout(() => {
+              const target = "Ask Trippy";
+              let finalCharIdx = fullText.length;
+              const reduce = () => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                if (finalCharIdx > target.length) {
+                  finalCharIdx--;
+                  setDisplayedChatText(fullText.slice(0, finalCharIdx));
+                  timeout = setTimeout(reduce, 40);
+                }
+              };
+              reduce();
+            }, 2500);
             return;
           }
           // Hold the full word for a bit before starting to delete
@@ -128,14 +142,22 @@ export default function TripCanvasScreen() {
   const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
   const [moreOptionsType, setMoreOptionsType] = useState('activity');
   const [moreOptionsLockKey, setMoreOptionsLockKey] = useState(null);
+  const [moreOptionsContext, setMoreOptionsContext] = useState(null); // Added context
   const [showSaveToast, setShowSaveToast] = useState(false);
 
   const saveChanges = useTripStore((s) => s.saveChanges);
 
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
   const sectionLayouts = useRef({});
   const scrollRef = useRef(null);
   const currentYRef = useRef(0);
   const scrollAnimRef = useRef(null); // Keep a ref to the active animation
+  const isSystemScrolling = useRef(false);
+
+  const HEADER_HEIGHT = 63;
+  const TABS_HEIGHT = 54;
+
+  const hasUnsavedChanges = useTripStore((s) => s.hasUnsavedChanges);
 
   // Track the current Y value for the manual "smooth scroll" start point
   useEffect(() => {
@@ -144,6 +166,8 @@ export default function TripCanvasScreen() {
     });
     return () => scrollY.removeListener(listenerId);
   }, [scrollY]);
+
+  // Intercept back button removed
 
   if (!trip) {
     return (
@@ -166,6 +190,8 @@ export default function TripCanvasScreen() {
     {
       useNativeDriver: true,
       listener: (e) => {
+        if (isSystemScrolling.current) return;
+
         const y = e.nativeEvent.contentOffset.y;
         let currentActive = 'checklist';
 
@@ -177,7 +203,7 @@ export default function TripCanvasScreen() {
         offsets.sort((a, b) => a.val - b.val);
 
         for (let i = 0; i < offsets.length; i++) {
-          if (y >= offsets[i].val - 180) {
+          if (y >= offsets[i].val - (HEADER_HEIGHT + TABS_HEIGHT + 20)) {
             currentActive = isNaN(offsets[i].key) ? offsets[i].key : parseInt(offsets[i].key, 10);
           }
         }
@@ -190,8 +216,9 @@ export default function TripCanvasScreen() {
   );
 
   const handleDayPress = (key) => {
+    isSystemScrolling.current = true;
     setActiveDay(key);
-    const targetY = Math.max(0, (sectionLayouts.current[key.toString()] || 0) - 80);
+    const targetY = Math.max(0, (sectionLayouts.current[key.toString()] || 0) - (HEADER_HEIGHT + TABS_HEIGHT - 6));
 
     if (scrollRef.current) {
       if (scrollAnimRef.current) {
@@ -211,6 +238,7 @@ export default function TripCanvasScreen() {
         easing: Easing.bezier(0.33, 1, 0.68, 1), // Custom smooth ease
         useNativeDriver: false,
       }).start(() => {
+        isSystemScrolling.current = false;
         scrollAnim.removeAllListeners();
         scrollAnimRef.current = null;
       });
@@ -309,25 +337,7 @@ export default function TripCanvasScreen() {
         </View>
 
         {/* Absolute Overlay Navigation (Hidden when hero is visible) with smooth fade */}
-        <Animated.View
-          style={[
-            styles.fixedNavWrap,
-            {
-              opacity: scrollY.interpolate({
-                inputRange: [240, 280],
-                outputRange: [0, 1],
-                extrapolate: 'clamp'
-              })
-            }
-          ]}
-          pointerEvents="box-none"
-        >
-          <DayNav
-            days={trip.days}
-            activeDay={activeDay}
-            onDayPress={handleDayPress}
-          />
-        </Animated.View>
+        {/* Sticky Fixed Navigation Bar is now handled inline for perfect sync */}
 
         <Animated.ScrollView
           ref={scrollRef}
@@ -354,12 +364,27 @@ export default function TripCanvasScreen() {
             </View>
           </View>
 
-          {/* Sticky Day Nav */}
-          <DayNav
-            days={trip.days}
-            activeDay={activeDay}
-            onDayPress={handleDayPress}
-          />
+          {/* Pure Animated Sticky Day Nav (No ghosting, perfect sync) */}
+          <Animated.View 
+            style={[
+              styles.stickyNavContainer,
+              {
+                transform: [{
+                  translateY: scrollY.interpolate({
+                    inputRange: [260, 261],
+                    outputRange: [0, 1],
+                    extrapolateLeft: 'clamp'
+                  })
+                }]
+              }
+            ]}
+          >
+            <DayNav
+              days={trip.days}
+              activeDay={activeDay}
+              onDayPress={handleDayPress}
+            />
+          </Animated.View>
 
           {/* Booking Checklist */}
           <View onLayout={(e) => sectionLayouts.current['checklist'] = e.nativeEvent.layout.y}>
@@ -492,6 +517,18 @@ export default function TripCanvasScreen() {
                             } else {
                               setMoreOptionsType(section.type);
                               setMoreOptionsLockKey(section.lockKey);
+                              
+                              // Determine context (area for hotels/activities, route for transit)
+                              let context = null;
+                              if (section.type === 'hotel' || section.type === 'activity') {
+                                // Try to find a representative item to get the area
+                                const firstItem = getItemById(section.itemIds[0]);
+                                context = firstItem?.area;
+                              } else if (section.type === 'transit') {
+                                const firstItem = getItemById(section.itemIds[0]);
+                                context = firstItem?.route;
+                              }
+                              setMoreOptionsContext(context);
                               setMoreOptionsVisible(true);
                             }
                           }}
@@ -584,6 +621,7 @@ export default function TripCanvasScreen() {
         <MoreOptionsModal
           visible={moreOptionsVisible}
           type={moreOptionsType}
+          context={moreOptionsContext}
           onClose={() => setMoreOptionsVisible(false)}
           onSelect={handleSelectMoreOption}
           alreadySelectedIds={Object.values(locks).flat()}
@@ -595,7 +633,6 @@ export default function TripCanvasScreen() {
             <Text style={styles.saveToastText}>Changes saved successfully</Text>
           </View>
         )}
-
       </View>
     </SafeAreaView>
   );
@@ -604,7 +641,7 @@ export default function TripCanvasScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.white, // Match the bottom nav/gesture area
   },
   container: {
     flex: 1,
@@ -648,7 +685,6 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -669,6 +705,19 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     ...StyleSheet.absoluteFillObject,
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    padding: Spacing.xl,
+    elevation: 20,
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -747,18 +796,17 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     ...Fonts.bold,
   },
-  fixedNavWrap: {
-    position: 'absolute',
-    top: 56,
-    left: 0,
-    right: 0,
-    zIndex: 100,
+  stickyNavContainer: {
+    zIndex: 500,
     backgroundColor: Colors.white,
-    shadowColor: '#000',
+    // Add shadow
+    shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
   },
 
   // Section block (timeline)

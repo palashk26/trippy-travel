@@ -15,15 +15,8 @@ export default function DayNav({ days = [], activeDay, onDayPress }) {
   const navScrollRef = useRef(null);
   const tabPositions = useRef({});
 
-  useEffect(() => {
-    const x = tabPositions.current[activeDay];
-    if (x !== undefined && navScrollRef.current) {
-      navScrollRef.current.scrollTo({ 
-        x: Math.max(0, x - Spacing.xl * 2), // Keep it nicely padded
-        animated: true 
-      });
-    }
-  }, [activeDay]);
+  // Removed auto-scroll on activeDay change to prevent horizontal jitter
+  // when user is just scrolling vertically through the page.
 
   return (
     <View style={styles.wrapper}>
@@ -45,6 +38,7 @@ export default function DayNav({ days = [], activeDay, onDayPress }) {
               <Text style={[styles.tabText, isActive && styles.tabTextActive]}>
                 {tab.label}
               </Text>
+              {isActive && <View style={styles.tabIndicator} />}
             </Pressable>
           );
         })}
@@ -65,12 +59,18 @@ const styles = StyleSheet.create({
   tab: {
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.lg,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
     marginRight: Spacing.lg,
+    position: 'relative',
   },
-  tabActive: {
-    borderBottomColor: Colors.orange,
+  tabActive: {},
+  tabIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: Colors.orange,
+    borderRadius: 3,
   },
   tabText: {
     fontSize: 14,

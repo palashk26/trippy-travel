@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getItemById } from '../data/mockData';
+import { getItemById, keralaTripTemplate } from '../data/mockData';
 
 /**
  * Trippy Global State (Zustand)
@@ -10,53 +10,8 @@ import { getItemById } from '../data/mockData';
  */
 const useTripStore = create((set, get) => ({
   // ── State ───────────────────────────────────────────────────────
-  savedTrips: [
-    {
-      id: 'trip_test_active',
-      title: 'Kerala Nature Exploration',
-      subtitle: 'Alleppey (2D) · Munnar (1D)',
-      duration: '3D/2N',
-      dates: 'Oct 12 - Oct 14',
-      travelers: '2 Adults, 1 Room',
-      coverImage: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
-      tags: ['Nature', 'Made for Solo', 'Affordable'],
-      status: 'active',
-      days: [
-        {
-          id: 'day1',
-          dayNumber: 1,
-          title: 'Alleppey Beach',
-          sections: [
-            { type: 'flight', label: 'Arrive Flight', itemIds: ['fl_out_1', 'fl_out_2', 'fl_out_3'], lockKey: 'outboundFlight' },
-            { type: 'hotel', label: 'Hotel Check-in', itemIds: ['htl_1', 'htl_2'], lockKey: 'hotel_alleppey' },
-            { type: 'activity', label: 'Things To Do', itemIds: ['act_1', 'act_2'], lockKey: 'activities_day1' },
-          ]
-        },
-        {
-          id: 'day2',
-          dayNumber: 2,
-          title: 'Alleppey Backwaters',
-          sections: [
-            { type: 'activity', label: 'Things To Do', itemIds: ['act_3', 'act_4'], lockKey: 'activities_day2' },
-          ]
-        },
-        {
-          id: 'day3',
-          dayNumber: 3,
-          title: 'Munnar Mountains',
-          sections: [
-            { type: 'hotel', label: 'Hotel Check-out', itemIds: ['htl_1', 'htl_2'], lockKey: 'hotel_alleppey' },
-            { type: 'transit', label: '⚠️ Transition Alert', itemIds: ['tr_1'], lockKey: 'transit_day3' },
-            { type: 'hotel', label: 'Hotel Check-in', itemIds: ['htl_3', 'htl_4'], lockKey: 'hotel_munnar' },
-            { type: 'activity', label: 'Things To Do', itemIds: ['act_5', 'act_6'], lockKey: 'activities_day3' },
-            { type: 'hotel', label: 'Hotel Check-out', itemIds: ['htl_3', 'htl_4'], lockKey: 'hotel_munnar' },
-            { type: 'flight', label: 'Depart Flight', itemIds: ['fl_ret_1', 'fl_ret_2'], lockKey: 'returnFlight' },
-          ]
-        }
-      ]
-    }
-  ],
-  activeTripId: 'trip_test_active',
+  savedTrips: [{ ...keralaTripTemplate, status: 'active' }],
+  activeTripId: 'trip_kerala_1',
   locks: {},
   hasUnsavedChanges: false,
   

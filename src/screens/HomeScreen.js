@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -31,6 +32,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <View style={styles.container}>
         <View style={styles.contentSheet}>
           {/* Scrollable content */}
@@ -49,131 +51,131 @@ export default function HomeScreen() {
                 <Text style={styles.walletText}>0</Text>
               </View>
             </View>
-          {/* Main big cards */}
-          <View style={styles.topCardsRow}>
-            {/* Hotels Card */}
-            <Pressable style={styles.mainCard}>
-              <View style={styles.iconWrap}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=150&h=150' }} 
-                  style={styles.iconImage}
-                />
-              </View>
-              <Text style={styles.mainCardTitle}>Hotels</Text>
-              <Text style={styles.mainCardSub}>Up to 60% off</Text>
-              
-              <LinearGradient
-                colors={['#FFE6DF', '#FFFFFF']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.lowestPriceBadge}
-              >
-                <Text style={styles.lowestPriceText}>Lowest Prices</Text>
-              </LinearGradient>
-            </Pressable>
+            {/* Main big cards */}
+            <View style={styles.topCardsRow}>
+              {/* Hotels Card */}
+              <Pressable style={styles.mainCard}>
+                <View style={styles.iconWrap}>
+                  <Image
+                    source={{ uri: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=150&h=150' }}
+                    style={styles.iconImage}
+                  />
+                </View>
+                <Text style={styles.mainCardTitle}>Hotels</Text>
+                <Text style={styles.mainCardSub}>Up to 60% off</Text>
 
-            {/* Flights Card */}
-            <Pressable style={styles.mainCard}>
-              <View style={styles.iconWrap}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=150&h=150' }} 
-                  style={styles.iconImage}
-                />
-              </View>
-              <Text style={styles.mainCardTitle}>Flights</Text>
-              <Text style={styles.mainCardSub}>Up to 25% off</Text>
-            </Pressable>
-          </View>
+                <LinearGradient
+                  colors={['#FFE6DF', '#FFFFFF']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.lowestPriceBadge}
+                >
+                  <Text style={styles.lowestPriceText}>Lowest Prices</Text>
+                </LinearGradient>
+              </Pressable>
 
-          {/* Secondary tiles */}
-          <View style={styles.secondaryTilesRow}>
-            {/* Buses Tile */}
-            <Pressable style={styles.tileCard}>
-              <View style={styles.smallIconWrap}>
-                 <Text style={{ fontSize: 24 }}>🚌</Text>
-              </View>
-              <Text style={styles.tileTitle}>Buses</Text>
-            </Pressable>
+              {/* Flights Card */}
+              <Pressable style={styles.mainCard}>
+                <View style={styles.iconWrap}>
+                  <Image
+                    source={{ uri: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=150&h=150' }}
+                    style={styles.iconImage}
+                  />
+                </View>
+                <Text style={styles.mainCardTitle}>Flights</Text>
+                <Text style={styles.mainCardSub}>Up to 25% off</Text>
+              </Pressable>
+            </View>
 
-            {/* Trains Tile */}
-            <Pressable style={styles.tileCard}>
-              <View style={styles.comingSoonBadge}>
-                <Text style={styles.comingSoonText}>COMING SOON</Text>
-              </View>
-              <View style={styles.smallIconWrap}>
-                 <Text style={{ fontSize: 24 }}>🚆</Text>
-              </View>
-              <Text style={styles.tileTitle}>Trains</Text>
-            </Pressable>
+            {/* Secondary tiles */}
+            <View style={styles.secondaryTilesRow}>
+              {/* Buses Tile */}
+              <Pressable style={styles.tileCard}>
+                <View style={styles.smallIconWrap}>
+                  <Text style={{ fontSize: 24 }}>🚌</Text>
+                </View>
+                <Text style={styles.tileTitle}>Buses</Text>
+              </Pressable>
 
-            {/* Holidays Tile */}
-            <Pressable style={styles.tileCard}>
-              <View style={styles.smallIconWrap}>
-                 <Text style={{ fontSize: 24 }}>🏖️</Text>
-              </View>
-              <Text style={styles.tileTitle}>Holidays</Text>
-            </Pressable>
-          </View>
+              {/* Trains Tile */}
+              <Pressable style={styles.tileCard}>
+                <View style={styles.comingSoonBadge}>
+                  <Text style={styles.comingSoonText}>COMING SOON</Text>
+                </View>
+                <View style={styles.smallIconWrap}>
+                  <Text style={{ fontSize: 24 }}>🚆</Text>
+                </View>
+                <Text style={styles.tileTitle}>Trains</Text>
+              </Pressable>
 
-          {/* TRIPPY AI TILE ROW (Full Width) */}
-          <Pressable style={styles.trippyFullCard} onPress={() => setChatVisible(true)}>
-             <View style={styles.aiPickBadge2}>
-               <Text style={styles.aiPickBadgeText2}>NEW</Text>
-             </View>
-             <View style={styles.trippyIconBlock}>
+              {/* Holidays Tile */}
+              <Pressable style={styles.tileCard}>
+                <View style={styles.smallIconWrap}>
+                  <Text style={{ fontSize: 24 }}>🏖️</Text>
+                </View>
+                <Text style={styles.tileTitle}>Holidays</Text>
+              </Pressable>
+            </View>
+
+            {/* TRIPPY AI TILE ROW (Full Width) */}
+            <Pressable style={styles.trippyFullCard} onPress={() => setChatVisible(true)}>
+              <View style={styles.aiPickBadge2}>
+                <Text style={styles.aiPickBadgeText2}>NEW</Text>
+              </View>
+              <View style={styles.trippyIconBlock}>
                 <TrippyAvatar size={48} />
-             </View>
-             <View style={styles.trippyTextBlock}>
+              </View>
+              <View style={styles.trippyTextBlock}>
                 <Text style={styles.trippyTitle}>Trippy AI Planner</Text>
                 <Text style={styles.trippyDesc}>Get a custom trip plan made for you in seconds.</Text>
-             </View>
-             <Feather name="arrow-right" size={20} color="#8A2BE2" />
-          </Pressable>
+              </View>
+              <Feather name="arrow-right" size={20} color="#8A2BE2" />
+            </Pressable>
 
-          {/* Banner Block */}
-          <View style={styles.bannerBlock}>
-             <Image
+            {/* Banner Block */}
+            <View style={styles.bannerBlock}>
+              <Image
                 source={{ uri: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&q=80&w=800' }}
                 style={styles.bannerImage}
               />
               <View style={styles.bannerOverlay}>
-                 <Text style={styles.bannerSubtitle}>HELLO</Text>
-                 <Text style={styles.bannerTitle}>Summer Exclusive</Text>
-                 <Text style={styles.bannerDesc}>Unlock up to 20% off</Text>
-                 <Text style={styles.bannerSubdesc}>on premium flights, hotels & travel</Text>
+                <Text style={styles.bannerSubtitle}>HELLO</Text>
+                <Text style={styles.bannerTitle}>Summer Exclusive</Text>
+                <Text style={styles.bannerDesc}>Unlock up to 20% off</Text>
+                <Text style={styles.bannerSubdesc}>on premium flights, hotels & travel</Text>
               </View>
-             <View style={styles.bannerFooter}>
+              <View style={styles.bannerFooter}>
                 <Text style={styles.bannerFooterTitle}>SBI Card</Text>
                 <View style={styles.bannerFooterDivider} />
                 <Text style={styles.bannerFooterDesc}>Valid on Credit Card Transactions*</Text>
-             </View>
-          </View>
+              </View>
+            </View>
 
-          {/* Optional bottom row of small vertical cards */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bottomCardsScroll}>
-             <View style={styles.bottomCard}>
-               <Image source={{ uri: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400' }} style={styles.bottomCardImg} />
-               <View style={styles.bottomCardOverlay}>
+            {/* Optional bottom row of small vertical cards */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bottomCardsScroll}>
+              <View style={styles.bottomCard}>
+                <Image source={{ uri: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400' }} style={styles.bottomCardImg} />
+                <View style={styles.bottomCardOverlay}>
                   <Text style={styles.bottomCardTitle}>Fly Home to India</Text>
                   <Text style={styles.bottomCardSub}>Up to ₹11,000 off</Text>
-               </View>
-             </View>
-             <View style={styles.bottomCard}>
-               <Image source={{ uri: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=400' }} style={styles.bottomCardImg} />
-               <View style={styles.bottomCardOverlayWhite}>
+                </View>
+              </View>
+              <View style={styles.bottomCard}>
+                <Image source={{ uri: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=400' }} style={styles.bottomCardImg} />
+                <View style={styles.bottomCardOverlayWhite}>
                   <Text style={styles.bottomCardTitleDark}>Brand of the day</Text>
                   <Text style={styles.bottomCardSubBrand}>Min. 25% off</Text>
-               </View>
-             </View>
-             <View style={styles.bottomCard}>
-               <LinearGradient colors={['#9B5DE5', '#F15BB5']} style={styles.bottomCardGradient}>
+                </View>
+              </View>
+              <View style={styles.bottomCard}>
+                <LinearGradient colors={['#9B5DE5', '#F15BB5']} style={styles.bottomCardGradient}>
                   <Text style={styles.bottomCardGradientTitle}>euphoria</Text>
                   <Text style={styles.bottomCardGradientSub}>Click to earn up to 11.5% CASHBACK!*</Text>
-               </LinearGradient>
-             </View>
-          </ScrollView>
+                </LinearGradient>
+              </View>
+            </ScrollView>
 
-        </ScrollView>
+          </ScrollView>
 
         </View>
 
@@ -182,8 +184,12 @@ export default function HomeScreen() {
         <ChatModal
           visible={chatVisible}
           onClose={() => setChatVisible(false)}
-          onTripCreated={() => {
-            navigation.navigate('MyTripsScreen');
+          onTripCreated={(tripId) => {
+            setChatVisible(false);
+            // Small delay to let modal close animation finish smoothly
+            setTimeout(() => {
+              navigation.navigate('TripCanvasScreen', { tripId });
+            }, 50);
           }}
         />
       </View>
@@ -194,7 +200,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF', // Fix top status bar to be white
+    backgroundColor: Colors.white, // Status bar area
   },
   container: {
     flex: 1,
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
   },
   contentSheet: {
     flex: 1,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: Colors.white,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     overflow: 'hidden',
@@ -322,7 +328,7 @@ const styles = StyleSheet.create({
   },
   tileCard: {
     flex: 1,
-    height: 85,
+    height: 95,
     backgroundColor: Colors.white,
     borderRadius: 20,
     alignItems: 'center',
@@ -384,7 +390,7 @@ const styles = StyleSheet.create({
   aiPickBadge2: {
     position: 'absolute',
     top: -8,
-    left: 35,
+    left: 30,
     backgroundColor: '#8A2BE2',
     paddingHorizontal: 8,
     paddingVertical: 4,

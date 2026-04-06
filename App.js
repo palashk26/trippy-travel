@@ -10,7 +10,6 @@ import {
   Inter_700Bold,
   Inter_800ExtraBold,
 } from '@expo-google-fonts/inter';
-import { Feather } from '@expo/vector-icons';
 import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
@@ -20,8 +19,9 @@ export default function App() {
     Inter_600SemiBold,
     Inter_700Bold,
     Inter_800ExtraBold,
-    ...Feather.font,
   });
+
+  if (!fontsLoaded) return null;
 
   return (
     <SafeAreaProvider>

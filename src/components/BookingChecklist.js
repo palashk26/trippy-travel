@@ -11,9 +11,11 @@ import { getItemById } from '../data/mockData';
 
 const anchors = [
   { key: 'outboundFlight', label: 'Outbound Flight', subline: 'HYD → COK • Oct 12', icon: 'airplane', day: 1 },
-  { key: 'hotel_alleppey', label: 'Hotel – Alleppey', subline: 'Check-in Oct 12 • 2 Nights', icon: 'home', day: 1 },
-  { key: 'hotel_munnar',   label: 'Hotel – Munnar', subline: 'Check-in Oct 14 • 1 Night', icon: 'home', day: 3 },
-  { key: 'returnFlight',   label: 'Return Flight', subline: 'COK → HYD • Oct 15', icon: 'airplane', day: 3 },
+  { key: 'hotel_alleppey', label: 'Hotel – Alleppey', subline: '2 Nights • Oct 12', icon: 'home', day: 1 },
+  { key: 'transit_day3',   label: 'Inter-City Transfer', subline: 'Alleppey → Munnar • Oct 14', icon: 'repeat', day: 3 },
+  { key: 'hotel_munnar',   label: 'Hotel – Munnar', subline: '1 Night • Oct 14', icon: 'home', day: 3 },
+  { key: 'transit_day4',   label: 'Inter-City Transfer', subline: 'Munnar → Kochi • Oct 14', icon: 'repeat', day: 3 },
+  { key: 'returnFlight',   label: 'Return Flight', subline: 'COK → HYD • Oct 14', icon: 'airplane', day: 3 },
 ];
 
 export default function BookingChecklist({ locks = {}, onAnchorPress }) {
@@ -71,7 +73,7 @@ export default function BookingChecklist({ locks = {}, onAnchorPress }) {
 
             <View style={[styles.badge, locked ? styles.badgeLocked : styles.badgePending]}>
               <Text style={[styles.badgeText, locked ? styles.badgeTextLocked : styles.badgeTextPending]}>
-                {locked ? 'Added' : 'Select CT'}
+                {locked ? 'Added' : 'Select'}
               </Text>
             </View>
           </Pressable>

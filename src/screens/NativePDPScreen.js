@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 import useTripStore from '../store/tripStore';
 import { getItemById } from '../data/mockData';
@@ -61,8 +61,8 @@ export default function NativePDPScreen() {
     type === 'hotel'
       ? `₹${(item.totalPrice || item.pricePerNight || 0).toLocaleString('en-IN')}`
       : item.price === 0
-      ? 'Free'
-      : `₹${(item.price || 0).toLocaleString('en-IN')}`;
+        ? 'Free'
+        : `₹${(item.price || 0).toLocaleString('en-IN')}`;
 
   const handleAddToTrip = () => {
     if (lockKey) {
@@ -102,39 +102,41 @@ export default function NativePDPScreen() {
           showsVerticalScrollIndicator={false}
         >
           {/* Image Carousel */}
-          <View style={styles.carouselContainer}>
-            <ScrollView
-              ref={scrollRef}
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-              onMomentumScrollEnd={handleScroll}
-            >
-              {images.map((imgSource, idx) => (
-                <Image
-                  key={idx}
-                  source={typeof imgSource === 'string' ? { uri: imgSource } : imgSource}
-                  style={styles.carouselImage}
-                  resizeMode="cover"
-                />
-              ))}
-            </ScrollView>
-
-            {/* Pagination dots */}
-            {images.length > 1 && (
-              <View style={styles.dotsRow}>
-                {images.map((_, idx) => (
-                  <View
+          {type !== 'transit' && type !== 'flight' && (
+            <View style={styles.carouselContainer}>
+              <ScrollView
+                ref={scrollRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={handleScroll}
+              >
+                {images.map((imgSource, idx) => (
+                  <Image
                     key={idx}
-                    style={[
-                      styles.dot,
-                      activeImageIdx === idx && styles.dotActive,
-                    ]}
+                    source={typeof imgSource === 'string' ? { uri: imgSource } : imgSource}
+                    style={styles.carouselImage}
+                    resizeMode="cover"
                   />
                 ))}
-              </View>
-            )}
-          </View>
+              </ScrollView>
+
+              {/* Pagination dots */}
+              {images.length > 1 && (
+                <View style={styles.dotsRow}>
+                  {images.map((_, idx) => (
+                    <View
+                      key={idx}
+                      style={[
+                        styles.dot,
+                        activeImageIdx === idx && styles.dotActive,
+                      ]}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
 
           {/* Title & Rating */}
           <View style={styles.titleSection}>
@@ -162,7 +164,7 @@ export default function NativePDPScreen() {
           {item.aiPick && item.aiReason && (
             <View style={styles.aiCard}>
               <View style={styles.aiHeader}>
-                <Feather name="zap" size={16} color={Colors.aiPickText} />
+                <Ionicons name="sparkles" size={16} color={Colors.purple} />
                 <Text style={styles.aiLabel}>Why Trippy Picked This</Text>
               </View>
               <Text style={styles.aiReason}>{item.aiReason}</Text>
@@ -453,8 +455,8 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   aiLabel: {
-    fontSize: 14,
-    color: Colors.aiPickText,
+    fontSize: 13,
+    color: Colors.purple,
     ...Fonts.bold,
   },
   aiReason: {
@@ -545,7 +547,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.xl,
     paddingTop: Spacing.md,
-    paddingBottom: 34,
+    paddingBottom: 16,
     borderTopWidth: 1,
     borderTopColor: Colors.border,
     backgroundColor: Colors.white,

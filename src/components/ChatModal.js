@@ -49,6 +49,12 @@ const BUDGET_RANGES = [
   { key: 'elite', label: 'Elite', desc: 'Ultimate luxury', emoji: '👑' },
 ];
 
+const STEP_SUGGESTIONS = {
+  1: "Oct 12",
+  3: "Hyderabad",
+  5: "I want a relaxed pace"
+};
+
 export default function ChatModal({ visible, onClose, onTripCreated }) {
   const step = useTripStore((s) => s.plannerStep);
   const messages = useTripStore((s) => s.plannerMessages);
@@ -120,7 +126,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
             })
           ]).start(() => {
             // Stage 3: Type sample prompt into Input Box
-            const promptStr = "Plan a 3 day trip to Kerala.";
+            const promptStr = "Plan a 3 day trip to Kerala";
             let pIdx = 0;
             const pInterval = setInterval(() => {
               if (pIdx < promptStr.length) {
@@ -143,6 +149,39 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
       };
     }
   }, [visible, messages.length]);
+
+  // Handle auto-typing for subsequent steps
+  useEffect(() => {
+    if (!visible || step === 0 || step === 2 || step === 4 || step >= 6) return;
+
+    // Check if the last message is from the bot
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg && lastMsg.sender === 'bot') {
+      const suggestedText = STEP_SUGGESTIONS[step];
+      if (suggestedText) {
+        // Delay a bit for the bot message to "settle"
+        const delayTimer = setTimeout(() => {
+          if (autoTypeRef.current) clearInterval(autoTypeRef.current);
+          
+          let pIdx = 0;
+          const pInterval = setInterval(() => {
+            if (pIdx < suggestedText.length) {
+              setInputText(suggestedText.substring(0, pIdx + 1));
+              pIdx++;
+            } else {
+              clearInterval(pInterval);
+            }
+          }, 30);
+          autoTypeRef.current = pInterval;
+        }, 1000);
+
+        return () => {
+          clearTimeout(delayTimer);
+          if (autoTypeRef.current) clearInterval(autoTypeRef.current);
+        };
+      }
+    }
+  }, [visible, step, messages.length]);
 
   useEffect(() => {
     // Just for analytics or meta logic if needed, 
@@ -315,10 +354,11 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
   };
 
   const handleViewTripPlan = () => {
-    const tripData = { ...keralaTripTemplate };
+    const tripId = `trip_kerala_${Date.now()}`;
+    const tripData = { ...keralaTripTemplate, id: tripId };
     createTrip(tripData);
     onClose();
-    if (onTripCreated) onTripCreated(tripData.id);
+    if (onTripCreated) onTripCreated(tripId);
   };
 
   // ─── Render ────────────────────────────────────────────────────
@@ -337,14 +377,14 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
       avoidKeyboard
     >
       <View style={styles.container}>
-        <Pressable style={styles.closeBtn} onPress={onClose}>
-          <Feather name="x" size={22} color={Colors.textPrimary} />
-        </Pressable>
-
         {/* Handle bar */}
         <View style={styles.handleBar}>
           <View style={styles.handle} />
         </View>
+
+        <Pressable style={styles.closeBtn} onPress={onClose}>
+          <Feather name="x" size={22} color={Colors.textPrimary} />
+        </Pressable>
 
         <FlatList
           ref={scrollRef}
@@ -430,7 +470,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
                     onPress={handleViewTripPlan}
                   >
                     <Feather name="map" size={18} color={Colors.textWhite} />
-                    <Text style={styles.viewPlanText}>View Trip Plan</Text>
+                    <Text style={styles.viewPlanText}>View Itinerary</Text>
                   </Pressable>
                 </View>
               );
@@ -682,17 +722,6 @@ const styles = StyleSheet.create({
   budgetEmoji: { fontSize: 15 },
   budgetLabel: { fontSize: 13, color: Colors.textSecondary, ...Fonts.medium },
   budgetLabelActive: { color: Colors.purple, ...Fonts.semibold },
-  handleBar: {
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  handle: {
-    width: 36,
-    height: 4,
-    backgroundColor: Colors.border,
-    borderRadius: 2,
-  },
   closeBtn: {
     position: 'absolute',
     top: 12,
@@ -702,5 +731,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 100,
   },
 });

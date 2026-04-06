@@ -118,7 +118,7 @@ export default function CanvasCard({ item, type = 'hotel', isLocked = false, onM
                 style={{ marginRight: 6 }} 
               />
             )}
-            <Text style={[styles.title, type === 'flight' && { fontSize: 13, color: Colors.textSecondary }]} numberOfLines={1}>{title}</Text>
+            <Text style={[styles.title, type === 'flight' && { fontSize: 13, color: Colors.textSecondary }]}>{title}</Text>
           </View>
 
         {/* Price Row (Hidden for activities) */}
@@ -149,12 +149,26 @@ export default function CanvasCard({ item, type = 'hotel', isLocked = false, onM
         )}
 
           {/* Location / Meta Row (Hotels/Activities/Transit) */}
-          {type !== 'flight' && (item.location || item.duration) && (
+          {type !== 'flight' && (item.location || item.duration || item.route) && (
             <View style={styles.locationRow}>
-              <Feather name={type === 'transit' ? 'clock' : 'map-pin'} size={12} color={Colors.textPrimary} />
-              <Text style={styles.locationText} numberOfLines={1}>
-                {type === 'transit' ? `${item.duration} journey · ${item.name}` : `3.6 km from center · ${item.location}`}
-              </Text>
+              {type === 'transit' ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+                  {item.route && (
+                    <Text style={styles.locationText}>
+                      {item.route} <Text style={{ color: Colors.textMuted }}>•</Text> 
+                    </Text>
+                  )}
+                  <Feather name="clock" size={12} color={Colors.textPrimary} style={{ marginHorizontal: 4 }} />
+                  <Text style={styles.locationText}>{item.duration}</Text>
+                </View>
+              ) : (
+                <>
+                  <Feather name="map-pin" size={12} color={Colors.textPrimary} />
+                  <Text style={styles.locationText}>
+                    3.6 km from center · {item.location}
+                  </Text>
+                </>
+              )}
             </View>
           )}
 

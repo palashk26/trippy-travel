@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -34,8 +34,8 @@ export default function QuickLookModal({
     type === 'hotel'
       ? `₹${(item.totalPrice || item.pricePerNight || 0).toLocaleString('en-IN')}`
       : item.price === 0
-      ? 'Free'
-      : `₹${(item.price || 0).toLocaleString('en-IN')}`;
+        ? 'Free'
+        : `₹${(item.price || 0).toLocaleString('en-IN')}`;
 
   const title =
     type === 'flight' ? `${item.airline} ${item.flightNo}` : item.name;
@@ -51,7 +51,7 @@ export default function QuickLookModal({
     }
   };
 
-  const hasImage = type !== 'flight' && !!(item.image || (item.images && item.images[0]));
+  const hasImage = type !== 'flight' && type !== 'transit' && !!(item.image || (item.images && item.images[0]));
 
   return (
     <Modal
@@ -61,7 +61,7 @@ export default function QuickLookModal({
       swipeDirection="down"
       scrollTo={handleScrollTo}
       scrollOffset={scrollOffset}
-      scrollOffsetMax={100} 
+      scrollOffsetMax={100}
       propagateSwipe={true}
       style={{ margin: 0, justifyContent: 'flex-end' }}
     >
@@ -79,7 +79,7 @@ export default function QuickLookModal({
           contentContainerStyle={styles.content}
         >
           {/* Image */}
-          {type !== 'flight' && (item.image || (item.images && item.images[0])) && (() => {
+          {type !== 'flight' && type !== 'transit' && (item.image || (item.images && item.images[0])) && (() => {
             const img = item.image || item.images[0];
             return (
               <Image
@@ -131,7 +131,7 @@ export default function QuickLookModal({
           {item.aiPick && item.aiReason && (
             <View style={styles.aiCard}>
               <View style={styles.aiHeader}>
-                <Feather name="zap" size={14} color={Colors.aiPickText || Colors.purple} />
+                <Ionicons name="sparkles" size={14} color={Colors.purple} />
                 <Text style={styles.aiLabel}>Why Trippy Picked This</Text>
               </View>
               <Text style={styles.aiReason}>{item.aiReason}</Text>
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
   },
   aiLabel: {
     fontSize: 13,
-    color: Colors.aiPickText,
+    color: Colors.purple,
     ...Fonts.bold,
   },
   aiReason: {
@@ -413,9 +413,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: Spacing.lg,
     paddingTop: Spacing.md,
-    paddingBottom: 34,
+    paddingBottom: 16,
     borderTopWidth: 1,
     borderTopColor: Colors.border,
+    backgroundColor: Colors.white,
     gap: Spacing.md,
   },
   addBtn: {

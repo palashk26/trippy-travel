@@ -22,6 +22,7 @@ export const outboundFlights = [
   {
     id: 'fl_out_1',
     type: 'outbound',
+    brand: 'indigo',
     airline: 'IndiGo',
     airlineLogo: 'https://ui-avatars.com/api/?name=IndiGo&background=00235D&color=fff&rounded=true&bold=true',
     flightNo: '6E-2145',
@@ -41,6 +42,7 @@ export const outboundFlights = [
   {
     id: 'fl_out_2',
     type: 'outbound',
+    brand: 'airindia',
     airline: 'Air India',
     airlineLogo: 'https://ui-avatars.com/api/?name=Air+India&background=ED1C24&color=fff&rounded=true&bold=true',
     flightNo: 'AI-516',
@@ -60,6 +62,7 @@ export const outboundFlights = [
   {
     id: 'fl_out_3',
     type: 'outbound',
+    brand: 'spicejet',
     airline: 'SpiceJet',
     airlineLogo: 'https://ui-avatars.com/api/?name=SpiceJet&background=ED1B24&color=fff&rounded=true&bold=true',
     flightNo: 'SG-723',
@@ -83,6 +86,7 @@ export const returnFlights = [
   {
     id: 'fl_ret_1',
     type: 'return',
+    brand: 'indigo',
     airline: 'IndiGo',
     airlineLogo: 'https://ui-avatars.com/api/?name=IndiGo&background=00235D&color=fff&rounded=true&bold=true',
     flightNo: '6E-2146',
@@ -102,6 +106,7 @@ export const returnFlights = [
   {
     id: 'fl_ret_2',
     type: 'return',
+    brand: 'vistara',
     airline: 'Vistara',
     airlineLogo: 'https://ui-avatars.com/api/?name=Vistara&background=5A2D81&color=fff&rounded=true&bold=true',
     flightNo: 'UK-874',
@@ -142,7 +147,6 @@ export const hotels = [
     aiPick: true,
     aiBadge: 'LAKE VIEW',
     aiReason: 'Top lake-view resort with complimentary houseboat kayaking.',
-    day: 1,
     area: 'alleppey',
   },
   {
@@ -165,7 +169,6 @@ export const hotels = [
     aiPick: true,
     aiBadge: 'NATURE RETREAT',
     aiReason: 'Nestled in coconut groves for a quieter, local experience.',
-    day: 1,
     area: 'alleppey',
   },
   {
@@ -195,7 +198,6 @@ export const hotels = [
     aiPick: true,
     aiBadge: 'MOUNTAIN VIEW',
     aiReason: 'Private mountain balconies — perfect for your chill preference.',
-    day: 3,
     area: 'munnar',
   },
   {
@@ -218,7 +220,38 @@ export const hotels = [
     aiPick: true,
     aiBadge: 'WELLNESS FOCUS',
     aiReason: 'Award-winning spa facilities for a relaxing mountain stay.',
-    day: 3,
+    area: 'munnar',
+  },
+  {
+    id: 'htl_5',
+    name: 'The Fog Munnar Resort',
+    location: 'Chithirapuram, Munnar',
+    rating: 4.6,
+    reviews: 1120,
+    pricePerNight: 5500,
+    nights: 1,
+    totalPrice: 5500,
+    image: 'https://loremflickr.com/400/300/resort,fog,mountain', 
+    images: ['https://loremflickr.com/800/600/resort,fog,mountain'],
+    amenities: ['Infinity Pool', 'Nature Walk', 'Club House'],
+    description: 'Breathtaking views of the tea plantations and a peaceful atmosphere.',
+    aiPick: false,
+    area: 'munnar',
+  },
+  {
+    id: 'htl_6',
+    name: 'Tea County Munnar',
+    location: 'KTDC, Munnar',
+    rating: 4.1,
+    reviews: 890,
+    pricePerNight: 4200,
+    nights: 1,
+    totalPrice: 4200,
+    image: 'https://loremflickr.com/400/300/hotel,munnar', 
+    images: ['https://loremflickr.com/800/600/hotel,munnar'],
+    amenities: ['Bar', 'Health Club', 'Doctor on call'],
+    description: 'A charming property by KTDC, located close to the town center but away from the noise.',
+    aiPick: false,
     area: 'munnar',
   },
 ];
@@ -229,6 +262,7 @@ export const transfers = [
     id: 'tr_1',
     type: 'transit',
     name: 'Private Car to Munnar',
+    route: 'Alleppey -> Munnar',
     description: 'Direct flights are unavailable between Alleppey and Munnar. Enjoy a scenic 4.5h drive through the Western Ghats.',
     price: 3200,
     duration: '4h 30m',
@@ -238,6 +272,55 @@ export const transfers = [
     aiReason: 'No flights for this route. Found a top-rated private car transfer.',
     isAlert: true,
     alertTitle: 'No flights found',
+  },
+  {
+    id: 'tr_2',
+    type: 'transit',
+    name: 'Private Car to Kochi Airport',
+    route: 'Munnar -> Kochi',
+    description: 'Ending your mountain stay? Your chauffeur will take you back to Kochi (COK) for your departure flight.',
+    price: 3500,
+    duration: '4h 15m',
+    image: 'https://images.unsplash.com/photo-1590301157890-48106202473?w=400&q=80',
+    aiPick: true,
+    aiBadge: 'TRANSIT OPTION',
+    aiReason: 'No flights for this route. Found a top-rated private car transfer.',
+    isAlert: true,
+    alertTitle: 'No flights found',
+  },
+  {
+    id: 'tr_bus_1',
+    type: 'transit',
+    name: 'KSRTC AC Bus to Munnar',
+    route: 'Alleppey -> Munnar',
+    description: 'The state-run AC Super Fast bus is the most economical way to reach Munnar. Enjoy local life and mountain views.',
+    price: 550,
+    duration: '5h 30m',
+    aiPick: true,
+    aiBadge: 'BUDGET FRIENDLY',
+    aiReason: 'Significant savings compared to a private car.',
+  },
+  {
+    id: 'tr_shared_1',
+    type: 'transit',
+    name: 'Shared Tourist Cab',
+    route: 'Alleppey -> Munnar',
+    description: 'A comfortable middle ground. Travel in an AC Innova shared with 3 other travelers.',
+    price: 1200,
+    duration: '4h 45m',
+    aiPick: true,
+    aiBadge: 'BEST VALUE',
+    aiReason: 'Faster than the bus, cheaper than a private car.',
+  },
+  {
+    id: 'tr_bus_2',
+    type: 'transit',
+    name: 'KSRTC AC Bus to Kochi',
+    route: 'Munnar -> Kochi',
+    description: 'Direct downhill bus service to Kochi city and airport. Reliability at a great price.',
+    price: 600,
+    duration: '5h 0m',
+    aiPick: false,
   },
 ];
 
@@ -261,7 +344,7 @@ export const activities = [
     aiPick: true,
     aiBadge: 'UNMISSABLE',
     aiReason: 'Top-rated Alleppey experience. Ideal for scenic backwater views.',
-    day: 1,
+    area: 'alleppey',
   },
   {
     id: 'act_2',
@@ -281,27 +364,27 @@ export const activities = [
     aiPick: true,
     aiBadge: 'GOLDEN HOUR',
     aiReason: 'The best spot in Alleppey for a legendary Kerala sunset.',
-    day: 1,
+    area: 'alleppey',
   },
   {
     id: 'act_3',
-    name: 'Houseboat Overnight Stay',
+    name: 'Sunset Shikara Cruise',
     description:
-      'Spend a night on a luxury houseboat drifting through Vembanad Lake. Includes dinner, breakfast, and a private deck under the stars.',
-    duration: 'Overnight',
-    price: 5500,
+      'A 2-hour private Shikara boat cruise through the narrowest and most scenic canals of Alleppey. Perfect for bird watching and catching the golden hour.',
+    duration: '2 hours',
+    price: 1500,
     rating: 4.9,
     reviews: 1456,
     image:
-      'https://loremflickr.com/400/300/luxury,houseboat,kerala', 
+      'https://loremflickr.com/400/300/kerala,shikara,boat', 
     images: [
-      'https://loremflickr.com/800/600/luxury,houseboat,kerala',
-      'https://loremflickr.com/800/600/lake,night',
+      'https://loremflickr.com/800/600/kerala,shikara,boat',
+      'https://loremflickr.com/800/600/backwaters,traditional,boat',
     ],
     aiPick: true,
-    aiBadge: 'SIGNATURE STAY',
-    aiReason: 'Highest-rated overnight experience. An unmissable Kerala highlight.',
-    day: 2,
+    aiBadge: 'SIGNATURE CRUISE',
+    aiReason: 'Highest-rated boating experience. This will be a premium add-on to your trip.',
+    area: 'alleppey',
   },
   {
     id: 'act_4',
@@ -319,7 +402,7 @@ export const activities = [
     aiPick: true,
     aiBadge: 'VILLAGE VIBE',
     aiReason: 'Highly recommended for an authentic Alleppey village experience.',
-    day: 2,
+    area: 'alleppey',
   },
   {
     id: 'act_5',
@@ -338,7 +421,7 @@ export const activities = [
     aiPick: true,
     aiBadge: 'BEST OF MUNNAR',
     aiReason: 'The signature Munnar experience. Budget-friendly and highly rated.',
-    day: 3,
+    area: 'munnar',
   },
   {
     id: 'act_6',
@@ -353,7 +436,7 @@ export const activities = [
     aiPick: true,
     aiBadge: 'WILDLIFE SCAN',
     aiReason: 'Your best chance to spot the endangered Nilgiri Tahr.',
-    day: 3,
+    area: 'munnar',
   },
   {
     id: 'act_7',
@@ -366,7 +449,7 @@ export const activities = [
     image: 'https://loremflickr.com/400/300/kathakali,dance', 
     images: ['https://loremflickr.com/800/600/kathakali,dance'],
     aiPick: false,
-    day: 1,
+    area: 'alleppey',
   },
   {
     id: 'act_8',
@@ -379,7 +462,7 @@ export const activities = [
     image: 'https://loremflickr.com/400/300/kayak,sunrise', 
     images: ['https://loremflickr.com/800/600/kayak,sunrise'],
     aiPick: false,
-    day: 2,
+    area: 'alleppey',
   },
   {
     id: 'act_9',
@@ -392,7 +475,7 @@ export const activities = [
     image: 'https://loremflickr.com/400/300/tea,museum', 
     images: ['https://loremflickr.com/800/600/tea,museum'],
     aiPick: false,
-    day: 3,
+    area: 'munnar',
   },
   {
     id: 'act_10',
@@ -405,7 +488,7 @@ export const activities = [
     image: 'https://loremflickr.com/400/300/ayurveda,massage', 
     images: ['https://loremflickr.com/800/600/ayurveda,massage'],
     aiPick: false,
-    day: 2,
+    area: 'alleppey',
   },
   {
     id: 'act_11',
@@ -418,7 +501,34 @@ export const activities = [
     image: 'https://loremflickr.com/400/300/dam,boating', 
     images: ['https://loremflickr.com/800/600/dam,boating'],
     aiPick: false,
-    day: 3,
+    area: 'munnar',
+  },
+  {
+    id: 'act_12',
+    name: 'Kolukkumalai Jeep Safari',
+    description: 'Ride to the world\'s highest tea plantation for a spectacular sunrise and panoramic hill views.',
+    duration: '5 hours',
+    price: 2500,
+    rating: 4.9,
+    reviews: 530,
+    image: 'https://loremflickr.com/400/300/jeep,safari,mountain', 
+    images: ['https://loremflickr.com/800/600/jeep,safari,mountain'],
+    aiPick: true,
+    aiBadge: 'ADVENTURE',
+    area: 'munnar',
+  },
+  {
+    id: 'act_13',
+    name: 'Tea Tasting Experience',
+    description: 'Sample over 10 varieties of premium Kerala tea while learning the nuances of tea production.',
+    duration: '1.5 hours',
+    price: 450,
+    rating: 4.7,
+    reviews: 310,
+    image: 'https://loremflickr.com/400/300/tea,cup', 
+    images: ['https://loremflickr.com/800/600/tea,cup'],
+    aiPick: false,
+    area: 'munnar',
   },
 ];
 
@@ -429,7 +539,7 @@ export const keralaTripTemplate = {
   subtitle: 'Alleppey(2) · Munnar(1)',
   destination: 'Kerala',
   duration: '3D/2N',
-  dates: 'Apr 20 – Apr 22',
+  dates: 'Oct 12 – Oct 14',
   travelers: 'Solo',
   origin: 'Hyderabad',
   preference: 'Chill',
@@ -471,7 +581,7 @@ export const keralaTripTemplate = {
         {
           type: 'activity',
           label: 'Things To Do',
-          itemIds: ['act_3', 'act_4'],
+          itemIds: ['act_4', 'act_3'],
           lockKey: 'activities_day2',
         },
       ],
@@ -484,7 +594,7 @@ export const keralaTripTemplate = {
         {
           type: 'hotel',
           label: 'Hotel Check-out',
-          itemIds: ['htl_1', 'htl_2'], // Alleppey stay
+          itemIds: ['htl_1', 'htl_2'],
           lockKey: 'hotel_alleppey',
         },
         {
@@ -508,8 +618,14 @@ export const keralaTripTemplate = {
         {
           type: 'hotel',
           label: 'Hotel Check-out',
-          itemIds: ['htl_3', 'htl_4'], // Munnar stay
+          itemIds: ['htl_3', 'htl_4'],
           lockKey: 'hotel_munnar',
+        },
+        {
+          type: 'transit',
+          label: 'Inter-City Transfer',
+          itemIds: ['tr_2'],
+          lockKey: 'transit_day4',
         },
         {
           type: 'flight',
@@ -567,4 +683,11 @@ export function getBaseEstimate() {
     actTotal +
     (transfers[0]?.price || 0)
   );
+}
+export function getEstimateRange() {
+  const base = getBaseEstimate();
+  // Provide a range from 10% below base to 50% above base for a realistic mix
+  const min = Math.floor((base * 0.9) / 500) * 500;
+  const max = Math.ceil((base * 1.5) / 500) * 500;
+  return { min, max };
 }

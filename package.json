@@ -6,8 +6,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "build": "npx expo export --platform web"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -36,8 +35,5 @@
   "devDependencies": {
     "@babel/core": "^7.25.0"
   },
-  "private": true,
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "private": true
 }
