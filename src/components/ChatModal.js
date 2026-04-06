@@ -386,47 +386,44 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
           <Feather name="x" size={22} color={Colors.textPrimary} />
         </Pressable>
 
-        <FlatList
-          ref={scrollRef}
-          data={[...messages].reverse()}
-          inverted
-          keyExtractor={(_, index) => index.toString()}
-          style={styles.scrollArea}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          ListHeaderComponent={<View style={{ height: 20 }} />}
-          ListFooterComponent={
-            // physically Top because it's an inverted list
-            step === 0 && messages.length === 0 ? (
-              <View style={styles.welcomeContainer}>
-                {/* Trippy avatar */}
-                <View style={styles.avatar}>
-                  <TrippyAvatar size={60} />
-                </View>
-                <Text style={styles.welcomeTitle}>
-                  {typedTitle}
-                </Text>
-                <Animated.Text style={[styles.welcomeSubtitle, { opacity: showSubOpacity }]}>
-                  {typedSub}
-                </Animated.Text>
+        {/* Welcome screen rendered outside FlatList to prevent scroll on initial load */}
+        {step === 0 && messages.length === 0 && (
+          <View style={styles.welcomeContainer}>
+            <View style={styles.avatar}>
+              <TrippyAvatar size={60} />
+            </View>
+            <Text style={styles.welcomeTitle}>{typedTitle}</Text>
+            <Animated.Text style={[styles.welcomeSubtitle, { opacity: showSubOpacity }]}>
+              {typedSub}
+            </Animated.Text>
+            <View style={styles.suggestionsGrid}>
+              {SUGGESTIONS.map((s, i) => (
+                <Pressable
+                  key={i}
+                  style={styles.suggestionCard}
+                  onPress={() => advanceStep(s.text)}
+                >
+                  <Text style={styles.suggestionEmoji}>{s.emoji}</Text>
+                  <Text style={styles.suggestionText}>{s.text}</Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        )}
 
-                {/* Suggestion cards (instant) */}
-                <View style={styles.suggestionsGrid}>
-                  {SUGGESTIONS.map((s, i) => (
-                    <Pressable
-                      key={i}
-                      style={styles.suggestionCard}
-                      onPress={() => advanceStep(s.text)}
-                    >
-                      <Text style={styles.suggestionEmoji}>{s.emoji}</Text>
-                      <Text style={styles.suggestionText}>{s.text}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              </View>
-            ) : <View style={{ height: 20 }} /> // Spacer at the physical top
-          }
-          renderItem={({ item: msg, index }) => {
+        {/* FlatList only shown when there are messages */}
+        {messages.length > 0 && (
+          <FlatList
+            ref={scrollRef}
+            data={[...messages].reverse()}
+            inverted
+            keyExtractor={(_, index) => index.toString()}
+            style={styles.scrollArea}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            ListHeaderComponent={<View style={{ height: 20 }} />}
+            ListFooterComponent={<View style={{ height: 20 }} />}
+            renderItem={({ item: msg, index }) => {
             if (msg.sender === 'chips') {
               return (
                 <ChipSelector
@@ -484,7 +481,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
             );
           }}
         />
-
+        )}
         {/* Input bar */}
         {step > 0 && step < 6 && step !== 2 && step !== 4 && (
           <View style={styles.inputBar}>
@@ -555,7 +552,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: SCREEN_HEIGHT * 0.8,
+    height: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
@@ -584,6 +581,7 @@ const styles = StyleSheet.create({
 
   // Welcome
   welcomeContainer: {
+    flex: 1,
     alignItems: 'center',
     paddingTop: 40,
     paddingHorizontal: Spacing.lg,
@@ -662,10 +660,9 @@ const styles = StyleSheet.create({
   inputBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
     paddingLeft: Spacing.lg,
-    paddingRight: 6,
-    paddingVertical: 6,
+    paddingRight: 8,
+    paddingVertical: 8,
     marginBottom: Platform.OS === 'ios' ? 32 : Spacing.xl,
     marginHorizontal: Spacing.lg,
     backgroundColor: Colors.white,
@@ -680,9 +677,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 44,
     backgroundColor: 'transparent',
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.sm,
     fontSize: 15,
     color: Colors.textPrimary,
+    // Remove web browser focus outline
+    ...(Platform.OS === 'web' ? { outlineStyle: 'none', outlineWidth: 0 } : {}),
     ...Fonts.medium,
   },
   sendBtn: {
@@ -693,6 +692,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
+    marginRight: 0,
   },
   budgetChipWrap: {
     flexDirection: 'row',
