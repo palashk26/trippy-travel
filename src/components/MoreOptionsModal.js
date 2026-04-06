@@ -7,8 +7,9 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Modal,
 } from 'react-native';
-import Modal from 'react-native-modal';
+// Removed react-native-modal for better Expo Web stability
 import { Feather } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 import { activities, hotels, transfers } from '../data/mockData';
@@ -53,17 +54,13 @@ export default function MoreOptionsModal({
 
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      onSwipeComplete={onClose}
-      swipeDirection="down"
-      style={styles.modal}
-      backdropColor={Colors.black}
-      backdropOpacity={0.6}
-      useNativeDriver={true}
-      propagateSwipe={true}
+      visible={visible}
+      onRequestClose={onClose}
+      transparent={true}
+      animationType="slide"
     >
-      <View style={styles.container}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <View style={styles.container} onStartShouldSetResponder={() => true}>
         {/* Handle */}
         <View style={styles.handleBar}>
           <View style={styles.handle} />
@@ -152,21 +149,23 @@ export default function MoreOptionsModal({
           )}
           <View style={{ height: 40 }} />
         </ScrollView>
-      </View>
+        </View>
+      </Pressable>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 0,
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
   container: {
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xxl,
     borderTopRightRadius: Radius.xxl,
-    height: SCREEN_HEIGHT * 0.8, // Slightly taller to accommodate 5 cards comfortably
+    maxHeight: SCREEN_HEIGHT * 0.85,
     paddingHorizontal: Spacing.xl,
   },
   handleBar: {

@@ -14,8 +14,9 @@ import {
   FlatList,
   Dimensions,
   Animated,
+  Modal,
 } from 'react-native';
-import Modal from 'react-native-modal';
+// Removed react-native-modal for better Expo Web stability
 import { Feather } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 
@@ -364,19 +365,13 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
   // ─── Render ────────────────────────────────────────────────────
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      style={{ margin: 0, justifyContent: 'flex-end', backgroundColor: 'transparent' }}
-      backdropColor={Colors.black}
-      backdropOpacity={0.4}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      useNativeDriver={Platform.OS !== 'web'}
-      useNativeDriverForBackdrop={Platform.OS !== 'web'}
-      hideModalContentWhileAnimating={true}
-      avoidKeyboard
+      visible={visible}
+      onRequestClose={onClose}
+      transparent={true}
+      animationType="slide"
     >
-      <View style={styles.container}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <View style={styles.container} onStartShouldSetResponder={() => true}>
         {/* Handle bar */}
         <View style={styles.handleBar}>
           <View style={styles.handle} />
@@ -540,11 +535,17 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
           </View>
         )}
       </View>
-    </Modal>
+    </Pressable>
+  </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
   container: {
     height: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,

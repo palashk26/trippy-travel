@@ -50,18 +50,18 @@ export default function DayNav({ days = [], activeDay, onDayPress }) {
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
   },
   container: {
     paddingHorizontal: Spacing.xl,
   },
   tab: {
+    height: 60,
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.lg,
     marginRight: Spacing.lg,
     alignItems: 'center',
+    justifyContent: 'center',
     position: 'relative',
   },
   tabActive: {},

@@ -7,8 +7,9 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Modal,
 } from 'react-native';
-import Modal from 'react-native-modal';
+// Removed react-native-modal for better Expo Web stability
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 
@@ -55,17 +56,13 @@ export default function QuickLookModal({
 
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      onSwipeComplete={onClose}
-      swipeDirection="down"
-      scrollTo={handleScrollTo}
-      scrollOffset={scrollOffset}
-      scrollOffsetMax={100}
-      propagateSwipe={true}
-      style={{ margin: 0, justifyContent: 'flex-end' }}
+      visible={visible}
+      onRequestClose={onClose}
+      transparent={true}
+      animationType="slide"
     >
-      <View style={styles.sheet}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <View style={styles.sheet} onStartShouldSetResponder={() => true}>
         {/* Handle */}
         <View style={[styles.handleBar, hasImage && styles.handleBarAbsolute]}>
           <View style={[styles.handle, hasImage && styles.handleImageOverlay]} />
@@ -209,19 +206,20 @@ export default function QuickLookModal({
             />
           </Pressable>
         </View>
-      </View>
+        </View>
+      </Pressable>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
+  modalOverlay: {
     flex: 1,
-    backgroundColor: Colors.overlay,
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
   sheet: {
-    maxHeight: SCREEN_HEIGHT * 0.75,
+    maxHeight: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,

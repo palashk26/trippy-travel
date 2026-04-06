@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, FlatList, StyleSheet, Dimensions, LayoutAnimation, Platform, UIManager } from 'react-native';
-import Modal from 'react-native-modal';
+import { View, Text, TextInput, Pressable, ScrollView, FlatList, StyleSheet, Dimensions, LayoutAnimation, Platform, UIManager, Modal } from 'react-native';
+// Removed react-native-modal for better Expo Web stability
 import { Feather } from '@expo/vector-icons';
 import { Colors, Fonts, Spacing, Radius } from '../theme/colors';
 import ChatBubble from './ChatBubble';
@@ -71,17 +71,13 @@ export default function CanvasChatModal({ visible, onClose }) {
 
   return (
     <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
-      style={{ margin: 0, justifyContent: 'flex-end', backgroundColor: 'transparent' }}
-      backdropColor={Colors.black}
-      backdropOpacity={0.4}
-      useNativeDriver={true}
-      useNativeDriverForBackdrop={true}
-      hideModalContentWhileAnimating={true}
-      avoidKeyboard
+      visible={visible}
+      onRequestClose={onClose}
+      transparent={true}
+      animationType="slide"
     >
-      <View style={styles.sheet}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
+        <View style={styles.sheet} onStartShouldSetResponder={() => true}>
         <Pressable style={styles.closeBtn} onPress={onClose}>
           <Feather name="x" size={22} color={Colors.textPrimary} />
         </Pressable>
@@ -149,18 +145,25 @@ export default function CanvasChatModal({ visible, onClose }) {
             <Feather name="send" size={18} color={inputText.trim() ? Colors.white : Colors.textPrimary} />
           </Pressable>
         </View>
-      </View>
+        </View>
+      </Pressable>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
   sheet: {
-    height: SCREEN_HEIGHT * 0.75,
+    height: SCREEN_HEIGHT * 0.85,
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.xl,
     borderTopRightRadius: Radius.xl,
     flexDirection: 'column',
+    overflow: 'hidden',
   },
   handleBar: {
     alignItems: 'center',
