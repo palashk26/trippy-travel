@@ -64,14 +64,6 @@ export default function HomeScreen() {
                 <Text style={styles.mainCardTitle}>Hotels</Text>
                 <Text style={styles.mainCardSub}>Up to 60% off</Text>
 
-                <LinearGradient
-                  colors={['#FFE6DF', '#FFFFFF']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.lowestPriceBadge}
-                >
-                  <Text style={styles.lowestPriceText}>Lowest Prices</Text>
-                </LinearGradient>
               </Pressable>
 
               {/* Flights Card */}
@@ -304,22 +296,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.textMuted,
     fontFamily: 'Inter_500Medium',
-  },
-  lowestPriceBadge: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 20,
-    height: 30,
-    justifyContent: 'center',
-    paddingHorizontal: Spacing.lg,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 24,
-  },
-  lowestPriceText: {
-    fontSize: 11,
-    color: Colors.orange,
-    fontFamily: 'Inter_600SemiBold',
   },
   secondaryTilesRow: {
     flexDirection: 'row',

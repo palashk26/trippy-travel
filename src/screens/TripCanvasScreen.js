@@ -782,7 +782,7 @@ const styles = StyleSheet.create({
 
   // Day section
   daySection: {
-    paddingTop: Spacing.xl,
+    paddingTop: Spacing.lg,
     paddingHorizontal: Spacing.lg,
   },
   dayHeader: {
@@ -821,7 +821,7 @@ const styles = StyleSheet.create({
 
   // Section block (timeline)
   sectionBlock: {
-    marginBottom: Spacing.xxxl,
+    marginBottom: Spacing.xxl,
   },
   sectionLabelRow: {
     flexDirection: 'row',

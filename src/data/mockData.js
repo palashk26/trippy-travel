@@ -555,7 +555,7 @@ export const keralaTripTemplate = {
       sections: [
         {
           type: 'flight',
-          label: 'Arrive Flight',
+          label: 'Flight to Kochi',
           itemIds: ['fl_out_1', 'fl_out_2', 'fl_out_3'],
           lockKey: 'outboundFlight',
         },
@@ -629,7 +629,7 @@ export const keralaTripTemplate = {
         },
         {
           type: 'flight',
-          label: 'Depart Flight',
+          label: 'Returning Flight',
           itemIds: ['fl_ret_1', 'fl_ret_2'],
           lockKey: 'returnFlight',
         },

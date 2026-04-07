@@ -19,7 +19,10 @@ export default function CheckoutCard({ item, label = 'Hotel Check-out' }) {
         <View style={styles.labelRow}>
           <Text style={styles.label}>{label}</Text>
         </View>
-        <Text style={styles.hotelName} numberOfLines={1}>
+        <Text 
+          style={[styles.hotelName, item.isPlaceholder && styles.placeholderText]} 
+          numberOfLines={1}
+        >
           {item.isPlaceholder ? 'Book a hotel to see details' : item.name}
         </Text>
       </View>
@@ -79,6 +82,11 @@ const styles = StyleSheet.create({
     fontSize: 14, // Smaller heading
     color: Colors.textPrimary,
     ...Fonts.bold,
+  },
+  placeholderText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    ...Fonts.regular,
   },
   subText: {
     fontSize: 12,

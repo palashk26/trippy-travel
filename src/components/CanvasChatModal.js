@@ -67,8 +67,6 @@ export default function CanvasChatModal({ visible, onClose }) {
     }, 2000);
   };
 
-  const [scrollOffset, setScrollOffset] = useState(0);
-
   return (
     <Modal
       visible={visible}
@@ -76,77 +74,78 @@ export default function CanvasChatModal({ visible, onClose }) {
       transparent={true}
       animationType="fade"
     >
-    <Pressable style={styles.modalOverlay} onPress={onClose}>
-      <View style={styles.sheet} onStartShouldSetResponder={() => true}>
-        <Pressable style={styles.closeBtn} onPress={onClose}>
-          <Feather name="x" size={22} color={Colors.textPrimary} />
-        </Pressable>
-
-        <View style={styles.handleBar}>
-          <View style={styles.handle} />
-        </View>
-
-        <FlatList
-          data={[...messages].reverse()}
-          inverted
-          keyExtractor={(_, index) => index.toString()}
-          style={styles.scrollArea}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          ListHeaderComponent={
-            messages[messages.length - 1].sender === 'bot' ? (
-              <ScrollView 
-                horizontal 
-                showsHorizontalScrollIndicator={false} 
-                style={styles.suggestionsScroll} 
-                contentContainerStyle={{ paddingHorizontal: Spacing.xl }}
-              >
-                {SUGGESTIONS.map((s, i) => (
-                  <Pressable
-                    key={i}
-                    style={styles.suggestionChip}
-                    onPress={() => setInputText(s.text)}
-                  >
-                    <Text style={styles.suggestionEmoji}>{s.emoji}</Text>
-                    <Text style={styles.suggestionText}>{s.text}</Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            ) : null
-          }
-          ListFooterComponent={<View style={{ height: 20 }} />}
-          renderItem={({ item: msg, index }) => {
-            if (msg.sender === 'thoughts') {
-              return <ThoughtBubble key={'tb_'+index} thoughts={msg.thoughts} isCompleted={msg.isCompleted} />;
-            }
-            return (
-              <ChatBubble
-                key={'cb_'+index}
-                text={msg.text}
-                sender={msg.sender}
-              />
-            );
-          }}
-        />
-
-        <View style={styles.inputBar}>
-          <TextInput
-            style={styles.input}
-            placeholder="Ask Trippy"
-            placeholderTextColor={Colors.textMuted}
-            value={inputText}
-            onChangeText={setInputText}
-            onSubmitEditing={handleSend}
-          />
-          <Pressable 
-            style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]} 
-            onPress={handleSend}
-          >
-            <Feather name="send" size={18} color={inputText.trim() ? Colors.white : Colors.textPrimary} />
+      <View style={styles.modalOverlay}>
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={styles.sheet}>
+          <Pressable style={styles.closeBtn} onPress={onClose}>
+            <Feather name="x" size={22} color={Colors.textPrimary} />
           </Pressable>
+
+          <View style={styles.handleBar}>
+            <View style={styles.handle} />
+          </View>
+
+          <FlatList
+            data={[...messages].reverse()}
+            inverted
+            keyExtractor={(_, index) => index.toString()}
+            style={styles.scrollArea}
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+            ListHeaderComponent={
+              messages[messages.length - 1]?.sender === 'bot' ? (
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false} 
+                  style={styles.suggestionsScroll} 
+                  contentContainerStyle={{ paddingHorizontal: Spacing.xl }}
+                >
+                  {SUGGESTIONS.map((s, i) => (
+                    <Pressable
+                      key={i}
+                      style={styles.suggestionChip}
+                      onPress={() => setInputText(s.text)}
+                    >
+                      <Text style={styles.suggestionEmoji}>{s.emoji}</Text>
+                      <Text style={styles.suggestionText}>{s.text}</Text>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              ) : null
+            }
+            ListFooterComponent={<View style={{ height: 20 }} />}
+            renderItem={({ item: msg, index }) => {
+              if (msg.sender === 'thoughts') {
+                return <ThoughtBubble key={'tb_'+index} thoughts={msg.thoughts} isCompleted={msg.isCompleted} />;
+              }
+              return (
+                <ChatBubble
+                  key={'cb_'+index}
+                  text={msg.text}
+                  sender={msg.sender}
+                />
+              );
+            }}
+          />
+
+          <View style={styles.inputBar}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ask Trippy"
+              placeholderTextColor={Colors.textMuted}
+              value={inputText}
+              onChangeText={setInputText}
+              onSubmitEditing={handleSend}
+            />
+            <Pressable 
+              style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]} 
+              onPress={handleSend}
+            >
+              <Feather name="send" size={18} color={inputText.trim() ? Colors.white : Colors.textPrimary} />
+            </Pressable>
+          </View>
         </View>
-        </View>
-      </Pressable>
+      </View>
     </Modal>
   );
 }
@@ -165,9 +164,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
   },
   sheet: {
     height: SCREEN_HEIGHT * 0.7,

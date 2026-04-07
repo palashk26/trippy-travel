@@ -10,8 +10,8 @@ import { getItemById, keralaTripTemplate } from '../data/mockData';
  */
 const useTripStore = create((set, get) => ({
   // ── State ───────────────────────────────────────────────────────
-  savedTrips: [{ ...keralaTripTemplate, status: 'active' }],
-  activeTripId: 'trip_kerala_1',
+  savedTrips: [],
+  activeTripId: null,
   locks: {},
   hasUnsavedChanges: false,
   

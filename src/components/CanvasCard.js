@@ -136,10 +136,13 @@ export default function CanvasCard({ item, type = 'hotel', isLocked = false, onM
           </View>
         ) : (
           <View style={styles.captionRow}>
-            <View style={[styles.activityMetaRow, { marginBottom: 6 }]}>
+            <View style={[styles.activityMetaRow, { marginBottom: 4 }]}>
               <Feather name="clock" size={12} color={Colors.textSecondary} />
               <Text style={styles.activityMetaText}>
-                {item.duration || 'Top Recommended'}
+                {item.duration || 'Top Recommended'}{' '}
+                <Text style={{ color: Colors.textMuted }}>•</Text>{' '}
+                <Feather name="map-pin" size={11} color={Colors.textSecondary} />{' '}
+                3.6 km from center
               </Text>
             </View>
             <Text style={styles.activityDescription} numberOfLines={2}>
@@ -163,9 +166,9 @@ export default function CanvasCard({ item, type = 'hotel', isLocked = false, onM
                 </View>
               ) : (
                 <>
-                  <Feather name="map-pin" size={12} color={Colors.textPrimary} />
+                  {type !== 'activity' && <Feather name="map-pin" size={12} color={Colors.textPrimary} />}
                   <Text style={styles.locationText}>
-                    3.6 km from center · {item.location}
+                    {type === 'activity' ? item.location : `3.6 km from center · ${item.location}`}
                   </Text>
                 </>
               )}
@@ -427,7 +430,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_500Medium',
   },
   captionRow: {
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   activityDescription: {
     fontSize: 13,
@@ -452,7 +455,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.sm,
   },
   locationText: {
     fontSize: 12,

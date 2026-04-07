@@ -32,7 +32,7 @@ const { width } = Dimensions.get('window');
 export default function MyTripsScreen() {
   const navigation = useNavigation();
   const [chatVisible, setChatVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState('planning');
   const savedTrips = useTripStore((s) => s.savedTrips);
   const setActiveTrip = useTripStore((s) => s.setActiveTrip);
 
@@ -99,7 +99,7 @@ export default function MyTripsScreen() {
 
                   {/* Status badge */}
                   <View style={styles.statusBadge}>
-                    <View style={styles.statusDot} />
+                    {trip.status === 'active' && <View style={styles.statusDot} />}
                     <Text style={styles.statusText}>{trip.status === 'active' ? 'Active' : 'Planning'}</Text>
                   </View>
 
@@ -211,6 +211,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.border,
+    shadowColor: Colors.shadowColor,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 10,
+    elevation: 2,
   },
   emptyTitle: {
     fontSize: 22,

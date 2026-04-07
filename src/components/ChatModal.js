@@ -370,8 +370,9 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
       transparent={true}
       animationType="fade"
     >
-      <Pressable style={styles.modalOverlay} onPress={onClose}>
-        <View style={styles.container} onStartShouldSetResponder={() => true}>
+      <View style={styles.modalOverlay}>
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={styles.container}>
           <Pressable style={styles.closeBtn} onPress={onClose}>
             <Feather name="x" size={22} color={Colors.textPrimary} />
           </Pressable>
@@ -476,66 +477,33 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
           }}
         />
         )}
-        {/* Input bar */}
-        {step > 0 && step < 6 && step !== 2 && step !== 4 && (
-          <View style={styles.inputBar}>
-            <TextInput
-              style={styles.input}
-              placeholder="Ask Trippy"
-              placeholderTextColor={Colors.textMuted}
-              value={inputText}
-              onChangeText={setInputText}
-              onSubmitEditing={handleSend}
-              returnKeyType="send"
-            />
-            <Pressable
-              style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
-              onPress={handleSend}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
-            </Pressable>
-          </View>
-        )}
-
-        {/* Static input bar for welcome & complete states */}
-        {(step === 0 || step >= 6) && (
-          <View style={styles.inputBar}>
-            <TextInput
-              style={styles.input}
-              placeholder="Ask Trippy"
-              placeholderTextColor={Colors.textMuted}
-              editable={step === 0}
-              value={inputText}
-              onChangeText={setInputText}
-              onSubmitEditing={() => {
-                if (step === 0 && inputText.trim()) {
-                  advanceStep(inputText.trim());
-                }
-              }}
-            />
-            <Pressable
-              style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
-              onPress={() => {
-                const text = inputText.trim();
-                if (!text) return;
-
-                if (step === 0) {
-                  advanceStep(text);
-                } else {
-                  // Fallback for post-generation or other states
-                  handleSend();
-                }
-              }}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
-            </Pressable>
-          </View>
-        )}
+        {/* Stable Input bar (Consolidated to prevent keyboard flicker/close) */}
+        <View style={styles.inputBar}>
+          <TextInput
+            style={styles.input}
+            placeholder="Ask Trippy"
+            placeholderTextColor={Colors.textMuted}
+            editable={step === 0 || (step > 0 && step < 6 && step !== 2 && step !== 4)}
+            value={inputText}
+            onChangeText={setInputText}
+            onSubmitEditing={() => {
+              if (step === 0 || (step > 0 && step < 6 && step !== 2 && step !== 4)) {
+                handleSend();
+              }
+            }}
+            returnKeyType="send"
+          />
+          <Pressable
+            style={[styles.sendBtn, !inputText.trim() && { backgroundColor: 'transparent' }]}
+            onPress={handleSend}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Feather name="send" size={18} color={inputText.trim() ? Colors.textWhite : Colors.textPrimary} />
+          </Pressable>
+        </View>
       </View>
-    </Pressable>
-  </Modal>
+      </View>
+    </Modal>
   );
 }
 
@@ -644,20 +612,24 @@ const styles = StyleSheet.create({
 
   // View Trip Plan
   viewPlanWrap: {
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: 6,
   },
   viewPlanBtn: {
+    alignSelf: 'flex-start',
+    marginLeft: 40, // Alignment with bot bubble after avatar
+    width: '72%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.sm,
-    backgroundColor: Colors.orange,   // transactional CTA — book/commit action
-    paddingVertical: Spacing.md,
-    borderRadius: Radius.full,
+    backgroundColor: Colors.orange,
+    paddingVertical: 10,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Radius.lg,
   },
   viewPlanText: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.textWhite,
     ...Fonts.bold,
   },
@@ -735,8 +707,13 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
   },
 });
