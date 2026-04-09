@@ -783,7 +783,7 @@ const styles = StyleSheet.create({
   // Day section
   daySection: {
     paddingTop: Spacing.lg,
-    paddingHorizontal: Spacing.lg,
+    paddingLeft: Spacing.lg,
   },
   dayHeader: {
     flexDirection: 'row',
@@ -846,11 +846,11 @@ const styles = StyleSheet.create({
     ...Fonts.semibold,
   },
   cardsScroll: {
-    marginLeft: 28,
+    marginLeft: 28, // Restored to clip cards before they hit the timeline
   },
   cardsRow: {
     paddingRight: Spacing.lg,
-    paddingLeft: 8,
+    paddingLeft: 8, // Restored original alignment
     paddingBottom: Spacing.lg,
   },
   customCard: {

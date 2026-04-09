@@ -43,7 +43,8 @@ export default function ChipSelector({ chips = defaultChips, onConfirm, locked =
       </View>
       {onConfirm && !locked && (
         <Pressable
-          style={styles.confirmBtn}
+          style={[styles.confirmBtn, selected.size === 0 && styles.confirmBtnDisabled]}
+          disabled={selected.size === 0}
           onPress={() => onConfirm([...selected])}
         >
           <Text style={styles.confirmText}>Confirm</Text>
@@ -97,6 +98,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: Radius.full,
     alignSelf: 'flex-start',
+  },
+  confirmBtnDisabled: {
+    backgroundColor: '#D1D5DB', // slate-300 / neutral gray
+    opacity: 0.8,
   },
   confirmText: {
     color: Colors.white,

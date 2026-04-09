@@ -72,6 +72,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
   const autoTypeRef = useRef(null);
   const isAutoTyping = useRef(false);
   const createTrip = useTripStore((s) => s.createTrip);
+  const resetPlanner = useTripStore((s) => s.resetPlanner);
 
   const [scrollOffset, setScrollOffset] = useState(0);
 
@@ -358,6 +359,7 @@ export default function ChatModal({ visible, onClose, onTripCreated }) {
     const tripId = `trip_kerala_${Date.now()}`;
     const tripData = { ...keralaTripTemplate, id: tripId };
     createTrip(tripData);
+    resetPlanner(); // Reset the planner state for the next use
     onClose();
     if (onTripCreated) onTripCreated(tripId);
   };
